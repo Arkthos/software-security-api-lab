@@ -34,6 +34,9 @@ function exec(cmd,args,cwd=root){
   // The unused chatbot proxy still needs a resolvable upstream when nginx loads its template.
   // No chatbot route is exercised; core identity/community/workshop routing is unchanged.
   config.services['crapi-web'].environment.CHATBOT_SERVICE='crapi-identity:8080';
+  // Upstream uses /dev/tcp under CMD-SHELL (Debian dash cannot open it).
+  // Preserve the upstream TCP readiness check, explicitly invoking bash.
+  config.services['api.mypremiumdealership.com'].healthcheck.test=['CMD','bash','-c','exec 3<>/dev/tcp/127.0.0.1/443'];
   config.services['crapi-web'].ports=[{target:80,published:'8888',host_ip:'127.0.0.1',protocol:'tcp'}];
   config.services.mailhog.ports=[{target:8025,published:'8025',host_ip:'127.0.0.1',protocol:'tcp'}];
   // Chatbot and its dependencies remain available in upstream config, but are not started.

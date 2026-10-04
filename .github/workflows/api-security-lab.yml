@@ -34,7 +34,7 @@ jobs:
           done
           echo "exit_code=$result" >> "$GITHUB_OUTPUT"
           cat results/runs/*/summary.md >> "$GITHUB_STEP_SUMMARY"
-          if [ "$result" -eq 2 ]; then exit 2; fi
+          if [ "$result" -eq 2 ] || [ "$result" -eq 3 ]; then exit "$result"; fi
       - name: Preserve sanitized evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
