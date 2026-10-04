@@ -7,8 +7,10 @@
 - [x] Implementar T01–T05, T08–T11 y generación determinista de colección.
 - [x] Runner Newman con evidencias permitidas y separación FAIL/BLOCKED/ERROR.
 - [x] Preparación Docker, CLI multiplataforma y workflows.
-- [ ] Crear repositorio `Arkthos/software-security-api-lab` privado, rama main inicializada con README.
-- [ ] Publicar incremento por PR y ejecutar validaciones de GitHub.
+- [x] Repositorio `Arkthos/software-security-api-lab` privado creado por el propietario, rama main inicializada con README.
+- [x] Publicar incremento en rama `feat/reproducible-lab-v0.1` y PR #1.
+- [x] Validación CI del primer commit aprobada; repetir ante cambios posteriores.
+- [ ] Verificar el último head del PR #1 y mergearlo desde la cuenta del propietario.
 - [ ] Ejecutar crAPI real y reparar problemas de preparación/instrumentación.
 
 ## Incremento 0.2: completar autorización

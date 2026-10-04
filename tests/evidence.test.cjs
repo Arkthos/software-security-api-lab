@@ -1,6 +1,6 @@
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
-const {outcome,evidence}=require('../scripts/evidence.cjs');
+const {outcome,evidence,applyDependencies}=require('../scripts/evidence.cjs');
 test('5xx or transport failure cannot become a successful denial',()=>{
   assert.equal(outcome({code:500,assertions:[{assertion:'SECURITY: denied'}]}),'ERROR');
   assert.equal(outcome({code:401,transportError:true}),'ERROR');
@@ -20,4 +20,10 @@ test('published evidence omits tokens, credentials, response bodies and headers'
   const s=JSON.stringify(row);
   for(const secret of ['private-token','private-password','private@example.com']) assert.ok(!s.includes(secret));
   assert.equal(row.observations.token_present,true);assert.equal(row.outcome,'PASS');
+});
+test('a denial cannot pass when positive baseline failed; blocking propagates',()=>{
+  const rows=[{test_id:'T01',outcome:'BLOCKED'},{test_id:'T02',outcome:'PASS'},
+    {test_id:'T10',outcome:'PASS'},{test_id:'T11',outcome:'PASS'}];
+  applyDependencies(rows);
+  assert.ok(rows.every(r=>r.outcome==='BLOCKED'));
 });

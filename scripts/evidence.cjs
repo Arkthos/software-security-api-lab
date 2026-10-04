@@ -21,4 +21,16 @@ function evidence(execution) {
     outcome:outcome({code:execution.response?.code,transportError:!!execution.requestError,assertions:execution.assertions || []})
   };
 }
-module.exports = {hash,outcome,evidence};
+function applyDependencies(rows) {
+  const dependencies={T02:['T01'],T03:['T01','T05'],T04:['T01','T05'],T05:['T01'],
+    T09:['T01','T08'],T10:['T01'],T11:['T10']};
+  // Fixed point also propagates a blocked prerequisite recorded later in the sequence.
+  for(let pass=0;pass<rows.length;pass++)for(const row of rows){
+    if(row.outcome==='ERROR')continue;
+    if((dependencies[row.test_id] || []).some(id=>rows.find(r=>r.test_id===id)?.outcome!=='PASS')){
+      row.outcome='BLOCKED';row.reason='A required positive control or prior state did not pass.';
+    }
+  }
+  return rows;
+}
+module.exports = {hash,outcome,evidence,applyDependencies};

@@ -4,7 +4,7 @@ const os = require('node:os');
 const crypto = require('node:crypto');
 const {spawnSync} = require('node:child_process');
 const newman = require('newman');
-const {evidence,hash} = require('./evidence.cjs');
+const {evidence,hash,applyDependencies} = require('./evidence.cjs');
 const root = path.resolve(__dirname,'..');
 const lock = require('../lab/crapi.lock.json');
 const collectionPath = path.join(root,'postman/api-security-lab.postman_collection.json');
@@ -13,7 +13,7 @@ const out = path.join(root,'results/runs',runId); fs.mkdirSync(out,{recursive:tr
 const stamp = crypto.randomBytes(8).toString('hex');
 const startedAt = new Date().toISOString();
 const git = spawnSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'});
-const rows = []; const timing = {};
+const rows = []; const timing = {}; const requestTimes = new Map();
 let tokenBeforeHash = null;
 const manifest = {run_id:runId,started_at:startedAt,experiment_status:'RUNNING',
   lab_repository_commit:git.status===0?git.stdout.trim():null,crapi:lock,
@@ -33,11 +33,14 @@ for(const variable of collection.variable) if(variable.key in values) variable.v
 const run = newman.run({collection,
   reporters:[],timeoutRequest:15000,timeoutScript:150000,timeout:420000,
   ignoreRedirects:true},(err,summary)=>{
-    rows.push(...(summary?.run?.executions || []).map(evidence));
+    rows.push(...(summary?.run?.executions || []).map(execution=>({
+      ...evidence(execution),request_at:requestTimes.get(execution.item.name) || null
+    })));
     if (timing.same_token_before_after !== true) {
       const temporal = rows.find(r=>r.test_id==='T11');
       if (temporal) temporal.outcome='BLOCKED';
     }
+    applyDependencies(rows);
     const status = err || !summary ? 'ERROR' : rows.some(r=>r.outcome==='ERROR'||r.outcome==='BLOCKED')?'INCOMPLETE':'COMPLETED';
     manifest.finished_at = new Date().toISOString(); manifest.experiment_status=status;
     rows.push({test_id:'T06',name:'Cross-user vehicle location',outcome:'BLOCKED',reason:'Two linked vehicles with verified distinct owners are required; not implemented in v0.1.'},
@@ -50,6 +53,7 @@ const run = newman.run({collection,
     process.exitCode = err || rows.some(r=>r.outcome==='ERROR') ? 2 : rows.some(r=>r.outcome==='FAIL') ? 1 : 3;
   });
 run.on('beforeRequest',(_err,args)=>{
+  requestTimes.set(args.item.name,new Date().toISOString());
   if (/^T1[01]/.test(args.item.name)) {
     const id=args.item.name.slice(0,3); timing[id+'_request_at']=new Date().toISOString();
     const auth=args.request.headers.get('Authorization') || '';
@@ -59,6 +63,7 @@ run.on('beforeRequest',(_err,args)=>{
   }
 });
 run.on('request',(_err,args)=>{
+  if(/^T1[01]/.test(args.item.name))timing[args.item.name.slice(0,3)+'_server_date']=args.response?.headers.get('Date') || null;
   if(args.item.name.startsWith('TIME-SETUP') && args.response){
     try {const token=JSON.parse(args.response.stream.toString()).token;
       const payload=JSON.parse(Buffer.from(token.split('.')[1],'base64url'));
