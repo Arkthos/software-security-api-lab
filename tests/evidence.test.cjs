@@ -28,3 +28,10 @@ test('a denial cannot pass when positive baseline failed; blocking propagates',(
   applyDependencies(rows);
   assert.ok(rows.every(r=>r.outcome==='BLOCKED'));
 });
+test('temporal rejection cannot be assessed when token lifetime setup failed',()=>{
+  const rows=[{test_id:'T01',outcome:'PASS'},{name:'CONTROL | Owned vehicles A',outcome:'PASS'},
+    {name:'TIME-SETUP | Fresh login',outcome:'BLOCKED'},{test_id:'T10',outcome:'PASS'},{test_id:'T11',outcome:'PASS'}];
+  applyDependencies(rows);
+  assert.equal(rows.find(r=>r.test_id==='T10').outcome,'BLOCKED');
+  assert.equal(rows.find(r=>r.test_id==='T11').outcome,'BLOCKED');
+});

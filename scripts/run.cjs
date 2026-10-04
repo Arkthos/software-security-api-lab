@@ -44,14 +44,15 @@ const run = newman.run({collection,
       if (temporal) temporal.outcome='BLOCKED';
     }
     applyDependencies(rows);
-    const status = err || !summary ? 'ERROR' : rows.some(r=>r.outcome==='ERROR'||r.outcome==='BLOCKED')?'INCOMPLETE':'COMPLETED';
+    const allRequestsExecuted=rows.length===collection.item.length && collection.item.every(item=>rows.some(row=>row.name===item.name));
+    const status = err || !summary ? 'ERROR' : !allRequestsExecuted || rows.some(r=>r.outcome==='ERROR'||r.outcome==='BLOCKED')?'INCOMPLETE':'COMPLETED';
     manifest.finished_at = new Date().toISOString(); manifest.experiment_status=status;
-    manifest.experiment_status = status;
+    manifest.all_requests_executed=allRequestsExecuted;
     save();
     fs.writeFileSync(path.join(out,'summary.md'),`# Ejecución ${runId}\n\nEstado: ${manifest.experiment_status}.\n\n| Caso | Resultado | HTTP |\n|---|---|---|\n`+
       rows.map(r=>`| ${r.name} | ${r.outcome} | ${r.http_status??'-'} |`).join('\n')+'\n\nFAIL indica una propiedad incumplida; requiere análisis. BLOCKED no es PASS.\n');
     console.log('Evidence saved: results/runs/' + runId);
-    process.exitCode = err || rows.some(r=>r.outcome==='ERROR') ? 2 : rows.some(r=>r.outcome==='BLOCKED') ? 3 : rows.some(r=>r.outcome==='FAIL') ? 1 : 0;
+    process.exitCode = err || rows.some(r=>r.outcome==='ERROR') ? 2 : !allRequestsExecuted || rows.some(r=>r.outcome==='BLOCKED') ? 3 : rows.some(r=>r.outcome==='FAIL') ? 1 : 0;
   });
 run.on('beforeRequest',(_err,args)=>{
   requestTimes.set(args.item.name,new Date().toISOString());

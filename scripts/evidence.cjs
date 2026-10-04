@@ -29,9 +29,9 @@ function evidence(execution) {
 }
 function applyDependencies(rows) {
   const dependencies={T02:['T01'],T03:['T01','CONTROL | Owned vehicles A'],T04:['T01','T05'],T05:['T01'],
-    T06:['T01','CONTROL | Own location A','CONTROL | Own location B'],
+    T06:['T01','CONTROL | Owned vehicles A','CONTROL | Owned vehicles B','CONTROL | Own location A','CONTROL | Own location B'],
     T07:['CONTROL | Admin identity','CONTROL | Ordinary identity','CONTROL | Admin user listing'],
-    T09:['T01','T08'],T10:['T01','CONTROL | Owned vehicles A'],T11:['T10']};
+    T09:['T01','T08'],T10:['T01','CONTROL | Owned vehicles A','TIME-SETUP | Fresh login'],T11:['T10']};
   // Fixed point also propagates a blocked prerequisite recorded later in the sequence.
   for(let pass=0;pass<rows.length;pass++)for(const row of rows){
     if(row.outcome==='ERROR')continue;

@@ -16,7 +16,8 @@ const signup = who => ({...login(who),name:'Lab ' + who.toUpperCase(),number:'{{
 const denied = `pm.test('SECURITY: denied without token or protected data', function () {
   pm.expect([401,403]).to.include(pm.response.code);
   let b = {}; try { b = pm.response.json(); } catch (_) {}
-  pm.expect(Boolean(b.token || b.email || b.vehicleLocation)).to.equal(false);
+  pm.expect(Boolean(b.token || b.email || b.vehicleLocation || b.carId ||
+    (Array.isArray(b.users) && b.users.length) || (Array.isArray(b) && b.length))).to.equal(false);
 });`;
 const token = who => `pm.test('PRECONDITION: login produces JWT', function () {
   pm.expect(pm.response.code).to.equal(200);

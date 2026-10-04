@@ -83,7 +83,8 @@
               "pm.test('SECURITY: denied without token or protected data', function () {",
               "  pm.expect([401,403]).to.include(pm.response.code);",
               "  let b = {}; try { b = pm.response.json(); } catch (_) {}",
-              "  pm.expect(Boolean(b.token || b.email || b.vehicleLocation)).to.equal(false);",
+              "  pm.expect(Boolean(b.token || b.email || b.vehicleLocation || b.carId ||",
+              "    (Array.isArray(b.users) && b.users.length) || (Array.isArray(b) && b.length))).to.equal(false);",
               "});"
             ]
           }
@@ -277,7 +278,8 @@
               "pm.test('SECURITY: denied without token or protected data', function () {",
               "  pm.expect([401,403]).to.include(pm.response.code);",
               "  let b = {}; try { b = pm.response.json(); } catch (_) {}",
-              "  pm.expect(Boolean(b.token || b.email || b.vehicleLocation)).to.equal(false);",
+              "  pm.expect(Boolean(b.token || b.email || b.vehicleLocation || b.carId ||",
+              "    (Array.isArray(b.users) && b.users.length) || (Array.isArray(b) && b.length))).to.equal(false);",
               "});"
             ]
           }
@@ -308,7 +310,8 @@
               "pm.test('SECURITY: denied without token or protected data', function () {",
               "  pm.expect([401,403]).to.include(pm.response.code);",
               "  let b = {}; try { b = pm.response.json(); } catch (_) {}",
-              "  pm.expect(Boolean(b.token || b.email || b.vehicleLocation)).to.equal(false);",
+              "  pm.expect(Boolean(b.token || b.email || b.vehicleLocation || b.carId ||",
+              "    (Array.isArray(b.users) && b.users.length) || (Array.isArray(b) && b.length))).to.equal(false);",
               "});"
             ]
           }
@@ -354,7 +357,8 @@
               "pm.test('SECURITY: denied without token or protected data', function () {",
               "  pm.expect([401,403]).to.include(pm.response.code);",
               "  let b = {}; try { b = pm.response.json(); } catch (_) {}",
-              "  pm.expect(Boolean(b.token || b.email || b.vehicleLocation)).to.equal(false);",
+              "  pm.expect(Boolean(b.token || b.email || b.vehicleLocation || b.carId ||",
+              "    (Array.isArray(b.users) && b.users.length) || (Array.isArray(b) && b.length))).to.equal(false);",
               "});"
             ]
           }
@@ -1072,7 +1076,8 @@
               "pm.test('SECURITY: denied without token or protected data', function () {",
               "  pm.expect([401,403]).to.include(pm.response.code);",
               "  let b = {}; try { b = pm.response.json(); } catch (_) {}",
-              "  pm.expect(Boolean(b.token || b.email || b.vehicleLocation)).to.equal(false);",
+              "  pm.expect(Boolean(b.token || b.email || b.vehicleLocation || b.carId ||",
+              "    (Array.isArray(b.users) && b.users.length) || (Array.isArray(b) && b.length))).to.equal(false);",
               "});",
               "pm.test('PRECONDITION: request after exp plus grace', () => {",
               "  pm.expect(Date.now()).to.be.at.least(Number(pm.collectionVariables.get('token_time_exp'))*1000 + 10000);",
