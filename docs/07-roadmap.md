@@ -15,7 +15,7 @@
 - [x] Archivo original verificado, evidencia sanitizada, CSV/comparación y hashes.
 - [x] Material técnico para el informe individual.
 
-El [workflow real](https://github.com/Arkthos/software-security-api-lab/actions/runs/37225125461) y el [workflow de consolidación](https://github.com/Arkthos/software-security-api-lab/actions/runs/37225833141) completaron correctamente. Consultar [PR #1](https://github.com/Arkthos/software-security-api-lab/pull/1) para el merge y la validación final.
+El [workflow real](https://github.com/Arkthos/software-security-api-lab/actions/runs/37225125461) y el [workflow de consolidación](https://github.com/Arkthos/software-security-api-lab/actions/runs/37226291123) completaron correctamente. Consultar [PR #1](https://github.com/Arkthos/software-security-api-lab/pull/1) para el merge y la validación final.
 
 ## Siguiente trabajo: entregable individual
 

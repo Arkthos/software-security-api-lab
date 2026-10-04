@@ -15,6 +15,8 @@ Los fallos de preparación/instrumentación no se mezclan con hallazgos de segur
 | [37225760762](https://github.com/Arkthos/software-security-api-lab/actions/runs/37225760762) | Recuperación del ZIP rechazada en redirección de almacenamiento. | Retirar Authorization de GitHub al seguir URL firmada de otro host. No modifica pruebas del objetivo. |
 | [37225833141](https://github.com/Arkthos/software-security-api-lab/actions/runs/37225833141) | Recuperación, hashes, análisis y exportación correctos. | Evidencia consolidada para publicación mediante conector. |
 
+La comparación Markdown se regeneró con separadores escapados en el [workflow 37226291123](https://github.com/Arkthos/software-security-api-lab/actions/runs/37226291123). Los JSON/manifiestos originales permanecen idénticos; el inventario de hashes refleja la nueva tabla derivada.
+
 El entorno local dejó de responder durante el cierre; la consolidación se completó en Actions. Los workflows no hacen pushes/merges. Las adaptaciones de arranque no alteran las decisiones de seguridad de los endpoints probados.
 
 Fuente del lector: [proyección MongoDB de MailHog](https://github.com/mailhog/storage/blob/master/mongodb.go). Es documentación operativa complementaria al corpus académico de cinco fuentes; las imágenes ejecutadas quedan fijadas por digest.
