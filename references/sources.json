@@ -21,7 +21,7 @@
     "url": "https://www.rfc-editor.org/rfc/rfc9110.html",
     "locator": "§15.5.2, §15.5.4 y §15.5.5",
     "support": "Semántica de 401, 403 y 404 para interpretar respuestas.",
-    "limitation": "Un código de estado no prueba ausencia de exposición; 401 debe incluir WWW-Authenticate. Ese encabezado queda pendiente de comprobación."
+    "limitation": "Un código de estado no prueba ausencia de exposición; 401 debe incluir WWW-Authenticate. Se observa su presencia como booleano, separado del oráculo de acceso."
   },
   {
     "id": "ATLIDAKIS-2020",

@@ -1,0 +1,69 @@
+{
+  "status": "ERROR",
+  "states": [
+    {
+      "name": "/software-security-api-lab-api.mypremiumdealership.com-1",
+      "image": "crapi/gateway-service@sha256:111a996957c1e9f78fe401b4d9a16bb99e6d6a3aa836792382a52c9ecbd39c8c",
+      "status": "running",
+      "exit_code": 0,
+      "oom_killed": false,
+      "health": "unhealthy"
+    },
+    {
+      "name": "/software-security-api-lab-crapi-community-1",
+      "image": "crapi/crapi-community@sha256:ff62181b9089df60379c1cecdcfceb0f54ea6d6c4d7c407bb2f5fd55208f2be0",
+      "status": "running",
+      "exit_code": 0,
+      "oom_killed": false,
+      "health": "healthy"
+    },
+    {
+      "name": "/software-security-api-lab-crapi-identity-1",
+      "image": "crapi/crapi-identity@sha256:5152eaa8b25d8585068ec478c9a2ee886ce1658d8289fd047f83325737490f78",
+      "status": "running",
+      "exit_code": 0,
+      "oom_killed": false,
+      "health": "healthy"
+    },
+    {
+      "name": "/software-security-api-lab-crapi-web-1",
+      "image": "crapi/crapi-web@sha256:6cbafa5085cc38199c5f16f71ad11579168e08ca25c22e9b89f55e423caa8746",
+      "status": "running",
+      "exit_code": 0,
+      "oom_killed": false,
+      "health": "healthy"
+    },
+    {
+      "name": "/software-security-api-lab-crapi-workshop-1",
+      "image": "crapi/crapi-workshop@sha256:b73a2e4aed1a62ba9c626214eca6b66289f2f5cced7169dbd791837edf263de6",
+      "status": "running",
+      "exit_code": 0,
+      "oom_killed": false,
+      "health": "healthy"
+    },
+    {
+      "name": "/software-security-api-lab-mailhog-1",
+      "image": "crapi/mailhog@sha256:c3a74b1f63673996aec82f175ad4dd49cc3152637f68dc3dfc9f765e06c0f5e9",
+      "status": "running",
+      "exit_code": 0,
+      "oom_killed": false,
+      "health": "healthy"
+    },
+    {
+      "name": "/software-security-api-lab-mongodb-1",
+      "image": "mongo@sha256:4be76f674fc4b27859816811b8baa3c51830eb1dbf4ca81a51e26b79edd662ef",
+      "status": "running",
+      "exit_code": 0,
+      "oom_killed": false,
+      "health": "healthy"
+    },
+    {
+      "name": "/software-security-api-lab-postgresdb-1",
+      "image": "postgres@sha256:c2427de38f998489d36de7ca3553db2134872c400f2b08be4b824e5c50e4d619",
+      "status": "running",
+      "exit_code": 0,
+      "oom_killed": false,
+      "health": "healthy"
+    }
+  ]
+}

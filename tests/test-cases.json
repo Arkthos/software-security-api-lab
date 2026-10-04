@@ -29,7 +29,7 @@
     "name": "Endpoint autenticado de vehículos sin token",
     "category": "authentication",
     "implementation": "implemented",
-    "preconditions": "Endpoint de dashboard existente",
+    "preconditions": "Listado autenticado de vehículos existente; control con token A exitoso",
     "change": "Sin Authorization",
     "expected": "401/403 sin vehículos",
     "sources": [

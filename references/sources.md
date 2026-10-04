@@ -36,7 +36,7 @@ Localizador: §15.5.2, §15.5.4 y §15.5.5
 
 Apoya: Semántica de 401, 403 y 404 para interpretar respuestas.
 
-Límite: Un código de estado no prueba ausencia de exposición; 401 debe incluir WWW-Authenticate. Ese encabezado queda pendiente de comprobación.
+Límite: Un código de estado no prueba ausencia de exposición; 401 debe incluir WWW-Authenticate. Se observa su presencia como booleano, separado del oráculo de acceso.
 
 ## ATLIDAKIS-2020
 

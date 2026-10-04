@@ -6,14 +6,14 @@ Los IDs se fijan en este archivo y test-cases.json; prevalecen sobre los borrado
 |---|---|---|---|
 | T01 | Login válido | implemented | 200 y JWT estructuralmente válido |
 | T02 | Contraseña incorrecta | implemented | 401/403 sin token o datos protegidos |
-| T03 | Dashboard sin token | implemented | 401/403 sin datos del usuario |
+| T03 | Listado autenticado de vehículos sin token | implemented | 401/403 sin vehículos |
 | T04 | Firma JWT alterada | implemented | 401/403 sin datos protegidos |
 | T05 | Acceso al dashboard propio | implemented | 200 y email de A |
 | T06 | Ubicación de vehículo de otro propietario | implemented | 403/404 sin ubicación o datos del objeto B |
 | T07 | Función privilegiada | implemented | Denegación y ausencia de datos/efectos privilegiados |
 | T08 | Login antes de existir la cuenta | implemented | 401/403 sin token |
 | T09 | Acceso posterior a signup/login | implemented | Dashboard 200 correspondiente a A |
-| T10 | JWT antes de exp | implemented | 200, identidad A y marca temporal anterior a exp |
+| T10 | JWT antes de exp | implemented | 200, vehículo propio de A y marca temporal anterior a exp |
 | T11 | Mismo JWT después de exp | implemented | 401/403 sin datos; misma huella JWT y marca posterior a exp+10 s |
 
 ## Endpoints leídos en OpenAPI y código al SHA fijado

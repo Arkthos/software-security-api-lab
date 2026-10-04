@@ -2,7 +2,7 @@
 
 Cuaderno de laboratorio del Taller investigativo 1: **El uso de las funciones de seguridad y la comprobación de relaciones de tiempo y estado**. Postman es el instrumento; Newman ejecuta la misma colección por CLI. Objetivo: OWASP crAPI local, v1.1.6-rc8.
 
-**Estado:** T01–T11 implementados, con controles de dos propietarios y de roles. Ejecución real de crAPI en validación. Las pruebas sintéticas verifican el instrumento y no representan hallazgos de crAPI.
+**Estado:** laboratorio implementado y ejecutado. T01–T11, tres repeticiones reales y 84 solicitudes sin ERROR/BLOCKED; siete pruebas del instrumento aprobadas. Evidencia, comparación y recomendaciones disponibles en main. El PDF individual se redacta con este material.
 
 ## Inicio
 
@@ -33,7 +33,10 @@ La pausa de T11 se calcula con el exp del token sin modificar su firma. Requiere
 - [Mapa de literatura](docs/02-literature-map.md)
 - [Metodología](docs/03-methodology.md)
 - [Casos y endpoints](docs/04-test-plan.md)
-- [Estado de resultados](docs/05-results-analysis.md)
+- [Resultados y recomendaciones](docs/05-results-analysis.md)
+- [Serie definitiva y CSV](results/approved/README.md)
+- [Guía para redactar el PDF](docs/08-deliverable-brief.md)
+- [Historial de estabilización](docs/09-execution-history.md)
 - [Limitaciones](docs/06-limitations.md)
 - [Roadmap y siguiente sesión](docs/07-roadmap.md)
 - [Fuentes accesibles](references/sources.md)
@@ -48,3 +51,15 @@ Trabajo en ramas `feat/…` o `fix/…`, PR con validación y merge desde la cue
 El objetivo es crAPI **v1.1.6-rc8**, una versión candidata elegida porque posee un conjunto completo de imágenes publicadas. Se fijan el commit d1cbf263a310ea4ed342e44a21a3ea32431e8ea6 y los ocho digests en lab/crapi.lock.json; el arranque no usa latest ni una etiqueta mutable. La correspondencia entre el tag de las imágenes y el tag de código se basa en la publicación del proveedor; no se verificó una atestación de compilación. Los resultados se atribuyen a los digests ejecutados.
 
 Dependencias npm fijadas con package-lock.json; runner ubuntu-24.04 y Node 22.14.0 en CI. El manifiesto registra los IDs y digests efectivos. La primera configuración v1.1.6 se descartó porque el tag de MailHog (y otras imágenes) no estaba publicado; no se obtuvieron resultados de seguridad en ese intento.
+
+## Resultados disponibles
+
+[Workflow real aprobado](https://github.com/Arkthos/software-security-api-lab/actions/runs/37225125461): cada run contiene 23 PASS y 5 FAIL de propiedades de seguridad. Los controles pasaron; un workflow verde indica ejecución operativa completa, no seguridad de crAPI. Se observaron firma alterada aceptada, BOLA en ambos sentidos, listado administrativo desde ROLE_USER y aceptación del mismo JWT a exp+10 s. La salvedad de tolerancia temporal y la observación WWW-Authenticate están en el análisis.
+
+La evidencia sanitizada está versionada en `results/approved`; `results/excluded` conserva un fallo de arranque y el primer intento incompleto. Para regenerar la comparación de los archivos conservados:
+
+```bash
+npm run analyze -- results/approved
+```
+
+La recuperación mediante `consolidate-evidence.yml` fija los workflows revisados, verifica hashes de archivos ZIP y exporta solamente evidencia sanitizada; no hace pushes ni merges. Los artifacts de Actions vencen a los 90 días; los archivos versionados quedan en el repositorio.

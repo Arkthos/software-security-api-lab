@@ -31,3 +31,11 @@ Duración experimental: 120000 ms, verificada en JwtProvider.generateJwtToken: D
 ## Repetición
 
 La primera fase estabiliza una ejecución. Antes del informe, repetir al menos tres runs reales; conservar desviaciones, variación de reloj, configuración y todos los IDs de ejecución. Este número es una decisión del protocolo, no una conclusión de la literatura. Las evidencias sintéticas solo validan el instrumento.
+
+## Evidencia y operación ejecutada
+
+Newman ejecutó la colección en GitHub Actions con datos nuevos por run, aserciones y reportes sanitizados. Se comprobó el flujo de cuentas, MailHog, vehículos, roles y tiempo. La selección del instrumento quedó operativamente validada para esta colección; no se realizó un benchmark ni un ensayo de ZAP/Burp.
+
+El oráculo de denegación comprueba JWT, email, ubicación, carId y listas no vacías de usuarios/vehículos. Son campos conocidos, no una detección universal de datos sensibles. WWW-Authenticate se registra como booleano y se interpreta aparte del acceso. T06 exige listas y ubicaciones propias; T10 depende además del setup de TTL. El runner requiere las 28 solicitudes para declarar cobertura completa.
+
+Las tres repeticiones usan cuentas nuevas dentro de un mismo despliegue; no son reinstalaciones independientes ni una estimación estadística. scripts/analyze.cjs exige tres runs completos con la misma definición, genera CSV/comparación y hashes SHA-256. Se preservan originales sanitizados y procedencia, sin corregir silenciosamente evidencia.

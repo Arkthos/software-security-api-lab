@@ -6,8 +6,8 @@
   "jwt_expiration_ms": 120000,
   "expiration_grace_ms": 10000,
   "source_verified_at": "2026-10-04",
-  "runtime_verified": false,
-  "image_digest_lock_status": "fixed_from_publisher_registry_pending_runtime_validation",
+  "runtime_verified": true,
+  "image_digest_lock_status": "fixed_and_verified_in_workflow_37225125461",
   "image_digests": {
     "crapi-identity": "crapi/crapi-identity@sha256:5152eaa8b25d8585068ec478c9a2ee886ce1658d8289fd047f83325737490f78",
     "crapi-web": "crapi/crapi-web@sha256:6cbafa5085cc38199c5f16f71ad11579168e08ca25c22e9b89f55e423caa8746",
@@ -17,5 +17,6 @@
     "api.mypremiumdealership.com": "crapi/gateway-service@sha256:111a996957c1e9f78fe401b4d9a16bb99e6d6a3aa836792382a52c9ecbd39c8c",
     "postgresdb": "postgres@sha256:c2427de38f998489d36de7ca3553db2134872c400f2b08be4b824e5c50e4d619",
     "mongodb": "mongo@sha256:4be76f674fc4b27859816811b8baa3c51830eb1dbf4ca81a51e26b79edd662ef"
-  }
+  },
+  "runtime_validation_workflow": 37225125461
 }

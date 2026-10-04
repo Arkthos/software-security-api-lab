@@ -1,0 +1,317 @@
+{
+  "runs": [
+    {
+      "run_id": "2026-10-04T18-39-34-899Z-1b753bc5",
+      "started_at": "2026-10-04T18:39:34.899Z",
+      "finished_at": "2026-10-04T18:41:47.076Z",
+      "pass": 23,
+      "fail": 5
+    },
+    {
+      "run_id": "2026-10-04T18-41-47-463Z-a8702241",
+      "started_at": "2026-10-04T18:41:47.464Z",
+      "finished_at": "2026-10-04T18:43:58.086Z",
+      "pass": 23,
+      "fail": 5
+    },
+    {
+      "run_id": "2026-10-04T18-43-58-429Z-031b8653",
+      "started_at": "2026-10-04T18:43:58.429Z",
+      "finished_at": "2026-10-04T18:46:09.082Z",
+      "pass": 23,
+      "fail": 5
+    }
+  ],
+  "experiment_commit": "f28d50d6412dccc167c5d9b3c7caa1755ba1d610",
+  "collection_sha256": "9bc19d69749a00da0d7f679e927c09970aa0feecae2bdf8f24ffcde6e5aa3bf1",
+  "cases": [
+    {
+      "name": "T08 | Login before account creation",
+      "id": "T08",
+      "outcomes": [
+        "PASS",
+        "PASS",
+        "PASS"
+      ],
+      "http": [
+        401,
+        401,
+        401
+      ]
+    },
+    {
+      "name": "T01 | Valid login A",
+      "id": "T01",
+      "outcomes": [
+        "PASS",
+        "PASS",
+        "PASS"
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ]
+    },
+    {
+      "name": "T02 | Wrong password",
+      "id": "T02",
+      "outcomes": [
+        "PASS",
+        "PASS",
+        "PASS"
+      ],
+      "http": [
+        401,
+        401,
+        401
+      ]
+    },
+    {
+      "name": "T03 | Protected vehicles without token",
+      "id": "T03",
+      "outcomes": [
+        "PASS",
+        "PASS",
+        "PASS"
+      ],
+      "http": [
+        401,
+        401,
+        401
+      ]
+    },
+    {
+      "name": "T04 | Dashboard with altered signature",
+      "id": "T04",
+      "outcomes": [
+        "FAIL",
+        "FAIL",
+        "FAIL"
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ]
+    },
+    {
+      "name": "T05 | Own dashboard",
+      "id": "T05",
+      "outcomes": [
+        "PASS",
+        "PASS",
+        "PASS"
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ]
+    },
+    {
+      "name": "T09 | Dashboard after signup and login",
+      "id": "T09",
+      "outcomes": [
+        "PASS",
+        "PASS",
+        "PASS"
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ]
+    },
+    {
+      "name": "T06 | Cross-user location A to B",
+      "id": "T06",
+      "outcomes": [
+        "FAIL",
+        "FAIL",
+        "FAIL"
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ]
+    },
+    {
+      "name": "T06 | Cross-user location B to A",
+      "id": "T06",
+      "outcomes": [
+        "FAIL",
+        "FAIL",
+        "FAIL"
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ]
+    },
+    {
+      "name": "T07 | Ordinary user attempts admin listing",
+      "id": "T07",
+      "outcomes": [
+        "FAIL",
+        "FAIL",
+        "FAIL"
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ]
+    },
+    {
+      "name": "T10 | Same token before expiration",
+      "id": "T10",
+      "outcomes": [
+        "PASS",
+        "PASS",
+        "PASS"
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ]
+    },
+    {
+      "name": "T11 | Same token after expiration",
+      "id": "T11",
+      "outcomes": [
+        "FAIL",
+        "FAIL",
+        "FAIL"
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ]
+    }
+  ],
+  "corroboration": [
+    {
+      "run_id": "2026-10-04T18-39-34-899Z-1b753bc5",
+      "http_401_challenges": [
+        {
+          "name": "T08 | Login before account creation",
+          "present": false
+        },
+        {
+          "name": "T02 | Wrong password",
+          "present": false
+        },
+        {
+          "name": "T03 | Protected vehicles without token",
+          "present": false
+        }
+      ],
+      "altered_signature_matches_own_email": true,
+      "distinct_owner_objects": true,
+      "cross_owner_location_matches": [
+        {
+          "name": "T06 | Cross-user location A to B",
+          "matches_car": true,
+          "matches_location": true
+        },
+        {
+          "name": "T06 | Cross-user location B to A",
+          "matches_car": true,
+          "matches_location": true
+        }
+      ],
+      "verified_roles": true,
+      "ordinary_listing_matches_admin": true,
+      "same_temporal_token": true,
+      "token_lifetime_seconds": 120,
+      "before_exp_seconds": -119.105,
+      "after_exp_seconds": 10.042,
+      "after_server_exp_seconds": 10,
+      "temporal_response_matches": true
+    },
+    {
+      "run_id": "2026-10-04T18-41-47-463Z-a8702241",
+      "http_401_challenges": [
+        {
+          "name": "T08 | Login before account creation",
+          "present": false
+        },
+        {
+          "name": "T02 | Wrong password",
+          "present": false
+        },
+        {
+          "name": "T03 | Protected vehicles without token",
+          "present": false
+        }
+      ],
+      "altered_signature_matches_own_email": true,
+      "distinct_owner_objects": true,
+      "cross_owner_location_matches": [
+        {
+          "name": "T06 | Cross-user location A to B",
+          "matches_car": true,
+          "matches_location": true
+        },
+        {
+          "name": "T06 | Cross-user location B to A",
+          "matches_car": true,
+          "matches_location": true
+        }
+      ],
+      "verified_roles": true,
+      "ordinary_listing_matches_admin": true,
+      "same_temporal_token": true,
+      "token_lifetime_seconds": 120,
+      "before_exp_seconds": -119.07,
+      "after_exp_seconds": 10.061,
+      "after_server_exp_seconds": 10,
+      "temporal_response_matches": true
+    },
+    {
+      "run_id": "2026-10-04T18-43-58-429Z-031b8653",
+      "http_401_challenges": [
+        {
+          "name": "T08 | Login before account creation",
+          "present": false
+        },
+        {
+          "name": "T02 | Wrong password",
+          "present": false
+        },
+        {
+          "name": "T03 | Protected vehicles without token",
+          "present": false
+        }
+      ],
+      "altered_signature_matches_own_email": true,
+      "distinct_owner_objects": true,
+      "cross_owner_location_matches": [
+        {
+          "name": "T06 | Cross-user location A to B",
+          "matches_car": true,
+          "matches_location": true
+        },
+        {
+          "name": "T06 | Cross-user location B to A",
+          "matches_car": true,
+          "matches_location": true
+        }
+      ],
+      "verified_roles": true,
+      "ordinary_listing_matches_admin": true,
+      "same_temporal_token": true,
+      "token_lifetime_seconds": 120,
+      "before_exp_seconds": -119.176,
+      "after_exp_seconds": 10.056,
+      "after_server_exp_seconds": 10,
+      "temporal_response_matches": true
+    }
+  ],
+  "stable_outcomes": true
+}

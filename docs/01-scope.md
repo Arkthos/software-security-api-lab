@@ -6,13 +6,13 @@ La consigna aportada exige investigar herramientas de validación de API, compro
 
 | Requisito | Evidencia del repositorio | Pendiente |
 |---|---|---|
-| Investigación de herramientas | docs/03-methodology.md | Añadir comparación operativa tras el primer run |
-| Autenticación | T01–T04 | Ejecución real |
-| Autorización | T05–T07 | Fixtures BOLA y política de rol |
-| Tiempo/estado | T08–T11 | Ejecución real |
-| Riesgos y vulnerabilidades | Evidencia, oráculos y análisis | Clasificación con datos observados |
-| Recomendaciones pertinentes | Plantilla de trazabilidad | Vincular a hallazgos validados |
-| Informe ejecutivo PDF | Secciones previstas aquí | Redacción posterior, no creada en v0.1 |
+| Investigación de herramientas | docs/03-methodology.md | Selección justificada y uso real de Newman; ZAP/Burp no se ejecutaron |
+| Autenticación | T01–T04 | Ejecutado en tres runs reales |
+| Autorización | T05–T07 | Fixtures, roles y controles verificados |
+| Tiempo/estado | T08–T11 | Ejecutado en tres runs reales |
+| Riesgos y vulnerabilidades | Evidencia, oráculos y análisis | Análisis disponible en docs/05-results-analysis.md |
+| Recomendaciones pertinentes | Plantilla de trazabilidad | Medidas y verificación posterior documentadas |
+| Informe ejecutivo PDF | Secciones previstas aquí | Redacción individual posterior; usar docs/08-deliverable-brief.md |
 
 Solo se ensaya el laboratorio propio en localhost. crAPI es deliberadamente vulnerable; los hallazgos no estiman prevalencia en producción. Este taller es distinto del proyecto final basado en Saleor/NovaMarket CR.
 

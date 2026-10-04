@@ -1,0 +1,783 @@
+[
+  {
+    "name": "T08 | Login before account creation",
+    "test_id": "T08",
+    "method": "POST",
+    "http_status": 401,
+    "response_sha256": "d84ec1412d739e3f003952aefdd4c1d63b0eef3ec942cf39f3facba8bd09512c",
+    "response_bytes": 88,
+    "observations": {
+      "token_present": false,
+      "email_present": false,
+      "location_present": false,
+      "role": null,
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": null,
+      "location_sha256": null,
+      "vehicle_ids_sha256": null
+    },
+    "assertions": [
+      {
+        "name": "SECURITY: denied without token or protected data",
+        "passed": true
+      }
+    ],
+    "outcome": "PASS",
+    "request_at": "2026-10-04T18:25:33.246Z"
+  },
+  {
+    "name": "SETUP | Create user A",
+    "test_id": null,
+    "method": "POST",
+    "http_status": 200,
+    "response_sha256": "ee0bd0bbc5ed5e87897ee90b6b20077024c254f2814f195c406ee467440aa851",
+    "response_bytes": 70,
+    "observations": {
+      "token_present": false,
+      "email_present": false,
+      "location_present": false,
+      "role": null,
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": null,
+      "location_sha256": null,
+      "vehicle_ids_sha256": null
+    },
+    "assertions": [
+      {
+        "name": "PRECONDITION: new account created",
+        "passed": true
+      }
+    ],
+    "outcome": "PASS",
+    "request_at": "2026-10-04T18:25:33.450Z"
+  },
+  {
+    "name": "SETUP | Create user B",
+    "test_id": null,
+    "method": "POST",
+    "http_status": 200,
+    "response_sha256": "ee0bd0bbc5ed5e87897ee90b6b20077024c254f2814f195c406ee467440aa851",
+    "response_bytes": 70,
+    "observations": {
+      "token_present": false,
+      "email_present": false,
+      "location_present": false,
+      "role": null,
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": null,
+      "location_sha256": null,
+      "vehicle_ids_sha256": null
+    },
+    "assertions": [
+      {
+        "name": "PRECONDITION: new account created",
+        "passed": true
+      }
+    ],
+    "outcome": "PASS",
+    "request_at": "2026-10-04T18:25:33.669Z"
+  },
+  {
+    "name": "T01 | Valid login A",
+    "test_id": "T01",
+    "method": "POST",
+    "http_status": 200,
+    "response_sha256": "8838d2035bbe2de6e39d9964b413cd532d787eae0ba2c4c28c7fd0c5bae8b641",
+    "response_bytes": 564,
+    "observations": {
+      "token_present": true,
+      "email_present": false,
+      "location_present": false,
+      "role": null,
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": null,
+      "location_sha256": null,
+      "vehicle_ids_sha256": null
+    },
+    "assertions": [
+      {
+        "name": "PRECONDITION: login produces JWT",
+        "passed": true
+      }
+    ],
+    "outcome": "PASS",
+    "request_at": "2026-10-04T18:25:33.776Z"
+  },
+  {
+    "name": "SETUP | Valid login B",
+    "test_id": null,
+    "method": "POST",
+    "http_status": 200,
+    "response_sha256": "edb5d2b9639ee02e4d4f0134c89ceaa3664055e9af379f75f2bf4d1066fe16d5",
+    "response_bytes": 564,
+    "observations": {
+      "token_present": true,
+      "email_present": false,
+      "location_present": false,
+      "role": null,
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": null,
+      "location_sha256": null,
+      "vehicle_ids_sha256": null
+    },
+    "assertions": [
+      {
+        "name": "PRECONDITION: login produces JWT",
+        "passed": true
+      }
+    ],
+    "outcome": "PASS",
+    "request_at": "2026-10-04T18:25:34.260Z"
+  },
+  {
+    "name": "T02 | Wrong password",
+    "test_id": "T02",
+    "method": "POST",
+    "http_status": 401,
+    "response_sha256": "59ae4bb8fa722280d4ed3a5c323d2fc4e6b958c11b5ac431d5296d3b66409e2a",
+    "response_bytes": 76,
+    "observations": {
+      "token_present": false,
+      "email_present": false,
+      "location_present": false,
+      "role": null,
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": null,
+      "location_sha256": null,
+      "vehicle_ids_sha256": null
+    },
+    "assertions": [
+      {
+        "name": "SECURITY: denied without token or protected data",
+        "passed": true
+      }
+    ],
+    "outcome": "PASS",
+    "request_at": "2026-10-04T18:25:34.379Z"
+  },
+  {
+    "name": "T03 | Protected vehicles without token",
+    "test_id": "T03",
+    "method": "GET",
+    "http_status": 401,
+    "response_sha256": "8a070614a8233272270aa2f6c519b1b189f801c2e26593456123e0209949625b",
+    "response_bytes": 49,
+    "observations": {
+      "token_present": false,
+      "email_present": false,
+      "location_present": false,
+      "role": null,
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": null,
+      "location_sha256": null,
+      "vehicle_ids_sha256": null
+    },
+    "assertions": [
+      {
+        "name": "SECURITY: denied without token or protected data",
+        "passed": true
+      }
+    ],
+    "outcome": "BLOCKED",
+    "request_at": "2026-10-04T18:25:34.483Z",
+    "reason": "A required positive control or prior state did not pass."
+  },
+  {
+    "name": "T04 | Dashboard with altered signature",
+    "test_id": "T04",
+    "method": "GET",
+    "http_status": 200,
+    "response_sha256": "23ad2717dd1f4614e5d60deaae4081142b70f38dd5bfca983ab2b9529fb64bcb",
+    "response_bytes": 201,
+    "observations": {
+      "token_present": false,
+      "email_present": true,
+      "location_present": false,
+      "role": "ROLE_USER",
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": "8682f0584dd854e3615c7022fc3651d129d88feecc7aa52c64613dcf7534a727",
+      "location_sha256": null,
+      "vehicle_ids_sha256": null
+    },
+    "assertions": [
+      {
+        "name": "SECURITY: denied without token or protected data",
+        "passed": false
+      }
+    ],
+    "outcome": "FAIL",
+    "request_at": "2026-10-04T18:25:34.509Z"
+  },
+  {
+    "name": "T05 | Own dashboard",
+    "test_id": "T05",
+    "method": "GET",
+    "http_status": 200,
+    "response_sha256": "23ad2717dd1f4614e5d60deaae4081142b70f38dd5bfca983ab2b9529fb64bcb",
+    "response_bytes": 201,
+    "observations": {
+      "token_present": false,
+      "email_present": true,
+      "location_present": false,
+      "role": "ROLE_USER",
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": "8682f0584dd854e3615c7022fc3651d129d88feecc7aa52c64613dcf7534a727",
+      "location_sha256": null,
+      "vehicle_ids_sha256": null
+    },
+    "assertions": [
+      {
+        "name": "SECURITY: own dashboard identity",
+        "passed": true
+      }
+    ],
+    "outcome": "PASS",
+    "request_at": "2026-10-04T18:25:34.561Z"
+  },
+  {
+    "name": "T09 | Dashboard after signup and login",
+    "test_id": "T09",
+    "method": "GET",
+    "http_status": 200,
+    "response_sha256": "23ad2717dd1f4614e5d60deaae4081142b70f38dd5bfca983ab2b9529fb64bcb",
+    "response_bytes": 201,
+    "observations": {
+      "token_present": false,
+      "email_present": true,
+      "location_present": false,
+      "role": "ROLE_USER",
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": "8682f0584dd854e3615c7022fc3651d129d88feecc7aa52c64613dcf7534a727",
+      "location_sha256": null,
+      "vehicle_ids_sha256": null
+    },
+    "assertions": [
+      {
+        "name": "SECURITY: own dashboard identity",
+        "passed": true
+      }
+    ],
+    "outcome": "PASS",
+    "request_at": "2026-10-04T18:25:34.648Z"
+  },
+  {
+    "name": "FIXTURE | Read vehicle email A",
+    "test_id": null,
+    "method": "GET",
+    "http_status": 200,
+    "response_sha256": "7f0c871ab0936ef0c987b8a25b9da027cc99a8cdcc7b841cdbf413e2eab46eb4",
+    "response_bytes": 6669,
+    "observations": {
+      "token_present": false,
+      "email_present": false,
+      "location_present": false,
+      "role": null,
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": null,
+      "location_sha256": null,
+      "vehicle_ids_sha256": null
+    },
+    "assertions": [
+      {
+        "name": "PRECONDITION: own vehicle email found",
+        "passed": false
+      }
+    ],
+    "outcome": "BLOCKED",
+    "request_at": "2026-10-04T18:25:34.679Z"
+  },
+  {
+    "name": "FIXTURE | Link vehicle A",
+    "test_id": null,
+    "method": "POST",
+    "http_status": 403,
+    "response_sha256": "9e33b5d03b9d7e4d2272da770ea2c4ed44f2bacfb62c84bc2c224f52f20f55bf",
+    "response_bytes": 64,
+    "observations": {
+      "token_present": false,
+      "email_present": false,
+      "location_present": false,
+      "role": null,
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": null,
+      "location_sha256": null,
+      "vehicle_ids_sha256": null
+    },
+    "assertions": [
+      {
+        "name": "PRECONDITION: vehicle linked",
+        "passed": false
+      }
+    ],
+    "outcome": "BLOCKED",
+    "request_at": "2026-10-04T18:25:34.699Z"
+  },
+  {
+    "name": "CONTROL | Owned vehicles A",
+    "test_id": null,
+    "method": "GET",
+    "http_status": 200,
+    "response_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "response_bytes": 2,
+    "observations": {
+      "token_present": false,
+      "email_present": false,
+      "location_present": false,
+      "role": null,
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": null,
+      "location_sha256": null,
+      "vehicle_ids_sha256": []
+    },
+    "assertions": [
+      {
+        "name": "PRECONDITION: one own vehicle exists",
+        "passed": false
+      }
+    ],
+    "outcome": "BLOCKED",
+    "request_at": "2026-10-04T18:25:34.745Z"
+  },
+  {
+    "name": "CONTROL | Own location A",
+    "test_id": null,
+    "method": "GET",
+    "http_status": 400,
+    "response_sha256": "916c10c9d086a7f24721009d701c8310bc531119d1c4092c7ce1385c8944917c",
+    "response_bytes": 165,
+    "observations": {
+      "token_present": false,
+      "email_present": false,
+      "location_present": false,
+      "role": null,
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": null,
+      "location_sha256": null,
+      "vehicle_ids_sha256": null
+    },
+    "assertions": [
+      {
+        "name": "PRECONDITION: own location matches own object",
+        "passed": false
+      }
+    ],
+    "outcome": "BLOCKED",
+    "request_at": "2026-10-04T18:25:34.781Z"
+  },
+  {
+    "name": "FIXTURE | Read vehicle email B",
+    "test_id": null,
+    "method": "GET",
+    "http_status": 200,
+    "response_sha256": "7f0c871ab0936ef0c987b8a25b9da027cc99a8cdcc7b841cdbf413e2eab46eb4",
+    "response_bytes": 6669,
+    "observations": {
+      "token_present": false,
+      "email_present": false,
+      "location_present": false,
+      "role": null,
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": null,
+      "location_sha256": null,
+      "vehicle_ids_sha256": null
+    },
+    "assertions": [
+      {
+        "name": "PRECONDITION: own vehicle email found",
+        "passed": false
+      }
+    ],
+    "outcome": "BLOCKED",
+    "request_at": "2026-10-04T18:25:34.870Z"
+  },
+  {
+    "name": "FIXTURE | Link vehicle B",
+    "test_id": null,
+    "method": "POST",
+    "http_status": 403,
+    "response_sha256": "9e33b5d03b9d7e4d2272da770ea2c4ed44f2bacfb62c84bc2c224f52f20f55bf",
+    "response_bytes": 64,
+    "observations": {
+      "token_present": false,
+      "email_present": false,
+      "location_present": false,
+      "role": null,
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": null,
+      "location_sha256": null,
+      "vehicle_ids_sha256": null
+    },
+    "assertions": [
+      {
+        "name": "PRECONDITION: vehicle linked",
+        "passed": false
+      }
+    ],
+    "outcome": "BLOCKED",
+    "request_at": "2026-10-04T18:25:34.891Z"
+  },
+  {
+    "name": "CONTROL | Owned vehicles B",
+    "test_id": null,
+    "method": "GET",
+    "http_status": 200,
+    "response_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "response_bytes": 2,
+    "observations": {
+      "token_present": false,
+      "email_present": false,
+      "location_present": false,
+      "role": null,
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": null,
+      "location_sha256": null,
+      "vehicle_ids_sha256": []
+    },
+    "assertions": [
+      {
+        "name": "PRECONDITION: one own vehicle exists",
+        "passed": false
+      }
+    ],
+    "outcome": "BLOCKED",
+    "request_at": "2026-10-04T18:25:34.981Z"
+  },
+  {
+    "name": "CONTROL | Own location B",
+    "test_id": null,
+    "method": "GET",
+    "http_status": 400,
+    "response_sha256": "916c10c9d086a7f24721009d701c8310bc531119d1c4092c7ce1385c8944917c",
+    "response_bytes": 165,
+    "observations": {
+      "token_present": false,
+      "email_present": false,
+      "location_present": false,
+      "role": null,
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": null,
+      "location_sha256": null,
+      "vehicle_ids_sha256": null
+    },
+    "assertions": [
+      {
+        "name": "PRECONDITION: own location matches own object",
+        "passed": false
+      }
+    ],
+    "outcome": "BLOCKED",
+    "request_at": "2026-10-04T18:25:35.074Z"
+  },
+  {
+    "name": "T06 | Cross-user location A to B",
+    "test_id": "T06",
+    "method": "GET",
+    "http_status": 400,
+    "response_sha256": "916c10c9d086a7f24721009d701c8310bc531119d1c4092c7ce1385c8944917c",
+    "response_bytes": 165,
+    "observations": {
+      "token_present": false,
+      "email_present": false,
+      "location_present": false,
+      "role": null,
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": null,
+      "location_sha256": null,
+      "vehicle_ids_sha256": null
+    },
+    "assertions": [
+      {
+        "name": "PRECONDITION: objects are distinct",
+        "passed": false
+      },
+      {
+        "name": "SECURITY: other owner location denied",
+        "passed": false
+      }
+    ],
+    "outcome": "BLOCKED",
+    "request_at": "2026-10-04T18:25:35.128Z",
+    "reason": "A required positive control or prior state did not pass."
+  },
+  {
+    "name": "T06 | Cross-user location B to A",
+    "test_id": "T06",
+    "method": "GET",
+    "http_status": 400,
+    "response_sha256": "916c10c9d086a7f24721009d701c8310bc531119d1c4092c7ce1385c8944917c",
+    "response_bytes": 165,
+    "observations": {
+      "token_present": false,
+      "email_present": false,
+      "location_present": false,
+      "role": null,
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": null,
+      "location_sha256": null,
+      "vehicle_ids_sha256": null
+    },
+    "assertions": [
+      {
+        "name": "PRECONDITION: objects are distinct",
+        "passed": false
+      },
+      {
+        "name": "SECURITY: other owner location denied",
+        "passed": false
+      }
+    ],
+    "outcome": "BLOCKED",
+    "request_at": "2026-10-04T18:25:35.160Z",
+    "reason": "A required positive control or prior state did not pass."
+  },
+  {
+    "name": "CONTROL | Admin login",
+    "test_id": null,
+    "method": "POST",
+    "http_status": 200,
+    "response_sha256": "a021f0c706189f45a1a98c45c1cb305b249bae0042e2921ea50578135e1f8580",
+    "response_bytes": 543,
+    "observations": {
+      "token_present": true,
+      "email_present": false,
+      "location_present": false,
+      "role": null,
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": null,
+      "location_sha256": null,
+      "vehicle_ids_sha256": null
+    },
+    "assertions": [
+      {
+        "name": "PRECONDITION: login produces JWT",
+        "passed": true
+      }
+    ],
+    "outcome": "PASS",
+    "request_at": "2026-10-04T18:25:35.188Z"
+  },
+  {
+    "name": "CONTROL | Admin identity",
+    "test_id": null,
+    "method": "GET",
+    "http_status": 200,
+    "response_sha256": "a3f219c2ba88d75b6087f7398ae3a1bd747581db2eda02caa828981ea73c6a2d",
+    "response_bytes": 231,
+    "observations": {
+      "token_present": false,
+      "email_present": true,
+      "location_present": false,
+      "role": "ROLE_ADMIN",
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": "258d8dc916db8cea2cafb6c3cd0cb0246efe061421dbd83ec3a350428cabda4f",
+      "location_sha256": null,
+      "vehicle_ids_sha256": null
+    },
+    "assertions": [
+      {
+        "name": "PRECONDITION: actual admin role",
+        "passed": true
+      }
+    ],
+    "outcome": "PASS",
+    "request_at": "2026-10-04T18:25:35.292Z"
+  },
+  {
+    "name": "CONTROL | Ordinary identity",
+    "test_id": null,
+    "method": "GET",
+    "http_status": 200,
+    "response_sha256": "23ad2717dd1f4614e5d60deaae4081142b70f38dd5bfca983ab2b9529fb64bcb",
+    "response_bytes": 201,
+    "observations": {
+      "token_present": false,
+      "email_present": true,
+      "location_present": false,
+      "role": "ROLE_USER",
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": "8682f0584dd854e3615c7022fc3651d129d88feecc7aa52c64613dcf7534a727",
+      "location_sha256": null,
+      "vehicle_ids_sha256": null
+    },
+    "assertions": [
+      {
+        "name": "PRECONDITION: ordinary role",
+        "passed": true
+      }
+    ],
+    "outcome": "PASS",
+    "request_at": "2026-10-04T18:25:35.345Z"
+  },
+  {
+    "name": "CONTROL | Admin user listing",
+    "test_id": null,
+    "method": "GET",
+    "http_status": 200,
+    "response_sha256": "cf66dfe5c44106d043cb7d9c150933085f593db68f1db71f860e014a0e31bfb2",
+    "response_bytes": 801,
+    "observations": {
+      "token_present": false,
+      "email_present": false,
+      "location_present": false,
+      "role": null,
+      "user_count": 9,
+      "car_id_sha256": null,
+      "email_sha256": null,
+      "location_sha256": null,
+      "vehicle_ids_sha256": null
+    },
+    "assertions": [
+      {
+        "name": "PRECONDITION: admin listing available",
+        "passed": true
+      }
+    ],
+    "outcome": "PASS",
+    "request_at": "2026-10-04T18:25:35.372Z"
+  },
+  {
+    "name": "T07 | Ordinary user attempts admin listing",
+    "test_id": "T07",
+    "method": "GET",
+    "http_status": 200,
+    "response_sha256": "cf66dfe5c44106d043cb7d9c150933085f593db68f1db71f860e014a0e31bfb2",
+    "response_bytes": 801,
+    "observations": {
+      "token_present": false,
+      "email_present": false,
+      "location_present": false,
+      "role": null,
+      "user_count": 9,
+      "car_id_sha256": null,
+      "email_sha256": null,
+      "location_sha256": null,
+      "vehicle_ids_sha256": null
+    },
+    "assertions": [
+      {
+        "name": "SECURITY: admin function denied for ordinary role",
+        "passed": false
+      }
+    ],
+    "outcome": "FAIL",
+    "request_at": "2026-10-04T18:25:35.412Z"
+  },
+  {
+    "name": "TIME-SETUP | Fresh login",
+    "test_id": null,
+    "method": "POST",
+    "http_status": 200,
+    "response_sha256": "5a4a573b54b3f9b2c523d321f15f010fb1d0c8834ca4184b7c041bab2c59eb0f",
+    "response_bytes": 564,
+    "observations": {
+      "token_present": true,
+      "email_present": false,
+      "location_present": false,
+      "role": null,
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": null,
+      "location_sha256": null,
+      "vehicle_ids_sha256": null
+    },
+    "assertions": [
+      {
+        "name": "PRECONDITION: login produces JWT",
+        "passed": true
+      },
+      {
+        "name": "PRECONDITION: bounded temporal token",
+        "passed": true
+      }
+    ],
+    "outcome": "PASS",
+    "request_at": "2026-10-04T18:25:35.452Z"
+  },
+  {
+    "name": "T10 | Same token before expiration",
+    "test_id": "T10",
+    "method": "GET",
+    "http_status": 200,
+    "response_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "response_bytes": 2,
+    "observations": {
+      "token_present": false,
+      "email_present": false,
+      "location_present": false,
+      "role": null,
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": null,
+      "location_sha256": null,
+      "vehicle_ids_sha256": []
+    },
+    "assertions": [
+      {
+        "name": "SECURITY: own authenticated vehicle list",
+        "passed": false
+      },
+      {
+        "name": "PRECONDITION: request before exp",
+        "passed": true
+      }
+    ],
+    "outcome": "BLOCKED",
+    "request_at": "2026-10-04T18:25:35.531Z",
+    "reason": "A required positive control or prior state did not pass."
+  },
+  {
+    "name": "T11 | Same token after expiration",
+    "test_id": "T11",
+    "method": "GET",
+    "http_status": 200,
+    "response_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "response_bytes": 2,
+    "observations": {
+      "token_present": false,
+      "email_present": false,
+      "location_present": false,
+      "role": null,
+      "user_count": null,
+      "car_id_sha256": null,
+      "email_sha256": null,
+      "location_sha256": null,
+      "vehicle_ids_sha256": []
+    },
+    "assertions": [
+      {
+        "name": "SECURITY: denied without token or protected data",
+        "passed": false
+      },
+      {
+        "name": "PRECONDITION: request after exp plus grace",
+        "passed": true
+      }
+    ],
+    "outcome": "BLOCKED",
+    "request_at": "2026-10-04T18:27:45.068Z",
+    "reason": "A required positive control or prior state did not pass."
+  }
+]
