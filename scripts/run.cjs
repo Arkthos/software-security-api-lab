@@ -50,7 +50,7 @@ const run = newman.run({collection,
     manifest.all_requests_executed=allRequestsExecuted;
     save();
     fs.writeFileSync(path.join(out,'summary.md'),`# Ejecución ${runId}\n\nEstado: ${manifest.experiment_status}.\n\n| Caso | Resultado | HTTP |\n|---|---|---|\n`+
-      rows.map(r=>`| ${r.name} | ${r.outcome} | ${r.http_status??'-'} |`).join('\n')+'\n\nFAIL indica una propiedad incumplida; requiere análisis. BLOCKED no es PASS.\n');
+      rows.map(r=>`| ${r.name.replaceAll('|','\\|')} | ${r.outcome} | ${r.http_status??'-'} |`).join('\n')+'\n\nFAIL indica una propiedad incumplida; requiere análisis. BLOCKED no es PASS.\n');
     console.log('Evidence saved: results/runs/' + runId);
     process.exitCode = err || rows.some(r=>r.outcome==='ERROR') ? 2 : !allRequestsExecuted || rows.some(r=>r.outcome==='BLOCKED') ? 3 : rows.some(r=>r.outcome==='FAIL') ? 1 : 0;
   });

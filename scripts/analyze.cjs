@@ -56,7 +56,7 @@ function writeAnalysis(directory){
   fs.writeFileSync(path.join(directory,'comparison.md'),'# Comparación de tres ejecuciones reales\n\n'+
     'Commit del experimento: `'+result.experiment_commit+'`. Resultados estables: '+result.stable_outcomes+'.\n\n'+
     '| Caso | Run 1 | Run 2 | Run 3 | HTTP 1/2/3 |\n|---|---|---|---|---|\n'+
-    result.cases.map(c=>'| '+c.name+' | '+c.outcomes.join(' | ')+' | '+c.http.join('/')+' |').join('\n')+'\n\n'+
+    result.cases.map(c=>'| '+c.name.replaceAll('|','\\|')+' | '+c.outcomes.join(' | ')+' | '+c.http.join('/')+' |').join('\n')+'\n\n'+
     'FAIL requiere interpretación con controles; no equivale por sí solo a una clasificación de vulnerabilidad. Ver analysis.json y docs/05-results-analysis.md.\n');
   const inventory={};
   function scan(dir){for(const entry of fs.readdirSync(dir,{withFileTypes:true})){
