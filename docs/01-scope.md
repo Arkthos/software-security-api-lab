@@ -2,7 +2,7 @@
 
 Pregunta: ¿cómo cambian las decisiones de acceso de crAPI al variar credenciales, propietario, estado de cuenta e instante respecto a exp?
 
-La consigna aportada exige investigar herramientas de validación de API, comprobar autenticación/autorización, analizar riesgos y proponer recomendaciones vinculadas a los resultados. Entrega individual en PDF con portada, introducción, situación actual, resultados, recomendaciones y conclusiones. No fija extensión ni fecha en el PDF revisado. No trasladar la restricción de 2–3 páginas de otro curso.
+La consigna aportada exige investigar herramientas de validación de API, comprobar autenticación/autorización, analizar riesgos y proponer recomendaciones vinculadas a los resultados. Entrega individual en PDF con portada, introducción, situación actual, resultados, recomendaciones y conclusiones. No fija extensión ni fecha en el PDF revisado.
 
 | Requisito | Evidencia del repositorio | Pendiente |
 |---|---|---|
