@@ -10,3 +10,5 @@
 - Las actions usan versiones mayores v4; la imagen ubuntu-24.04 puede recibir actualizaciones. Falta fijar actions por SHA y documentar todas las capas que afectan reproducibilidad.
 - Dependencias npm transitivas son las del runner elegido; no se declara una auditoría de supply chain.
 - El informe académico PDF no se ha redactado; el repositorio servirá como su evidencia técnica.
+
+El chatbot no se arranca ni recibe credenciales de servicios externos. La configuración de gateway dirige su upstream no utilizado a identity para permitir cargar la plantilla nginx; ninguna prueba visita /chatbot. Los controles de seguridad de los endpoints ensayados no se modifican. Se desactiva TLS solamente en el transporte interno del laboratorio en loopback.

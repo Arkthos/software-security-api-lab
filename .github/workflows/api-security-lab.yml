@@ -25,8 +25,13 @@ jobs:
         shell: bash
         run: |
           set +e
-          npm run lab:run
-          result=$?
+          result=0
+          for repetition in 1 2 3; do
+            npm run lab:run
+            current=$?
+            if [ "$current" -eq 2 ] || [ "$current" -eq 3 ]; then result=$current; break; fi
+            if [ "$current" -eq 1 ]; then result=1; fi
+          done
           echo "exit_code=$result" >> "$GITHUB_OUTPUT"
           cat results/runs/*/summary.md >> "$GITHUB_STEP_SUMMARY"
           if [ "$result" -eq 2 ]; then exit 2; fi

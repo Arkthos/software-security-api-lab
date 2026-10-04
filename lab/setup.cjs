@@ -31,6 +31,9 @@ function exec(cmd,args,cwd=root){
   for(const [name,volume] of Object.entries(config.volumes || {}))volume.name='software-security-api-lab_'+name;
   for(const [name,network] of Object.entries(config.networks || {}))network.name='software-security-api-lab_'+name;
   config.services['crapi-identity'].environment.JWT_EXPIRATION=String(lock.jwt_expiration_ms);
+  // The unused chatbot proxy still needs a resolvable upstream when nginx loads its template.
+  // No chatbot route is exercised; core identity/community/workshop routing is unchanged.
+  config.services['crapi-web'].environment.CHATBOT_SERVICE='crapi-identity:8080';
   config.services['crapi-web'].ports=[{target:80,published:'8888',host_ip:'127.0.0.1',protocol:'tcp'}];
   config.services.mailhog.ports=[{target:8025,published:'8025',host_ip:'127.0.0.1',protocol:'tcp'}];
   // Chatbot and its dependencies remain available in upstream config, but are not started.
@@ -50,7 +53,18 @@ function exec(cmd,args,cwd=root){
     images[name]={tag:service.image,digest,image_id:info.Id};service.image=digest;
   }
   fs.writeFileSync(compose,JSON.stringify(config,null,2)+'\n');
-  exec('docker',[...prefix,'up','-d','--wait','--wait-timeout','360',...active]);
+  try {exec('docker',[...prefix,'up','-d','--wait','--wait-timeout','360',...active]);}
+  catch(error){
+    const directory=path.join(root,'results/runs','startup-'+Date.now());fs.mkdirSync(directory,{recursive:true});
+    let states=[];
+    try{const ids=exec('docker',[...prefix,'ps','-aq']).split(/\s+/).filter(Boolean);
+      if(ids.length)states=JSON.parse(exec('docker',['inspect',...ids])).map(c=>({name:c.Name,image:c.Config.Image,
+        status:c.State.Status,exit_code:c.State.ExitCode,oom_killed:c.State.OOMKilled,
+        health:c.State.Health?.Status || null}));
+    }catch(_){}
+    fs.writeFileSync(path.join(directory,'startup-diagnostics.json'),JSON.stringify({status:'ERROR',states},null,2)+'\n');
+    throw error;
+  }
   const deadline=Date.now()+60000;
   while(true){
     try {const response=await fetch('http://127.0.0.1:8888/health',{signal:AbortSignal.timeout(5000)});if(response.ok)break;}catch(_){}
