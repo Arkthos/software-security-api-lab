@@ -1,0 +1,21 @@
+{
+  "name": "software-security-api-lab",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Laboratorio reproducible de autenticación, autorización y tiempo/estado en crAPI",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.cjs",
+    "validate": "node scripts/validate.cjs",
+    "build:collection": "node scripts/build-collection.cjs",
+    "lab:setup": "node lab/setup.cjs",
+    "lab:down": "node lab/setup.cjs --down",
+    "lab:run": "node scripts/run.cjs",
+    "analyze": "node scripts/analyze.cjs"
+  },
+  "dependencies": {
+    "newman": "6.2.1"
+  }
+}

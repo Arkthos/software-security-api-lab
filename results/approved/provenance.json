@@ -1,0 +1,29 @@
+[
+  {
+    "workflow_run_id": 37225125461,
+    "classification": "approved",
+    "artifact_id": 11311418378,
+    "artifact_name": "api-security-evidence-37225125461",
+    "archive_sha256": "84430b4e699c4d664e4f3078f386eabb00c574f9137aa08453ec118e40b871df",
+    "source_head_sha": "f28d50d6412dccc167c5d9b3c7caa1755ba1d610",
+    "created_at": "2026-10-04T18:46:09Z"
+  },
+  {
+    "workflow_run_id": 37224235724,
+    "classification": "excluded",
+    "artifact_id": 11311342254,
+    "artifact_name": "api-security-evidence-37224235724",
+    "archive_sha256": "fae4d66ad0ee98525fda7a86bd60fc2db59fbc8dd0bb18162278ab9952b3ba60",
+    "source_head_sha": "7842c994111e881857ae3486d46473e0b8fd634e",
+    "created_at": "2026-10-04T18:27:45Z"
+  },
+  {
+    "workflow_run_id": 37223791385,
+    "classification": "excluded",
+    "artifact_id": 11311346802,
+    "artifact_name": "api-security-evidence-37223791385",
+    "archive_sha256": "0c96ee7be9779c000e6d1222f05e2779d3c36b0b68a938f08057fbb6a1809c1e",
+    "source_head_sha": "acdf0d22d392db63ab7e0390397dffe7e00880e5",
+    "created_at": "2026-10-04T18:21:25Z"
+  }
+]

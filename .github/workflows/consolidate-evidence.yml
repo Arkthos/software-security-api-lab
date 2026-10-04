@@ -1,0 +1,79 @@
+name: Consolidate reviewed experiment evidence
+on:
+  push:
+    branches:
+      - 'evidence/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  consolidate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22.14.0'
+      - name: Recover sanitized artifacts and verify archive digests
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPOSITORY: ${{ github.repository }}
+        run: |
+          python3 - <<'PY'
+          import os,json,urllib.request,urllib.parse,hashlib,zipfile,io,pathlib
+          repo=os.environ['GH_REPOSITORY']
+          class SafeRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self,req,fp,code,msg,headers,newurl):
+                  redirected=super().redirect_request(req,fp,code,msg,headers,newurl)
+                  if urllib.parse.urlparse(newurl).hostname!='api.github.com': redirected.remove_header('Authorization')
+                  return redirected
+          opener=urllib.request.build_opener(SafeRedirect())
+          def get(route):
+              req=urllib.request.Request('https://api.github.com/repos/'+repo+route,headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'})
+              return opener.open(req,timeout=30).read()
+          source_runs=[(37225125461,'approved'),(37224235724,'excluded'),(37223791385,'excluded')]
+          provenance=[]
+          for run_id,classification in source_runs:
+              artifacts=json.loads(get('/actions/runs/'+str(run_id)+'/artifacts'))['artifacts']
+              if len(artifacts)!=1: raise RuntimeError('Expected exactly one evidence artifact')
+              artifact=artifacts[0]
+              data=get('/actions/artifacts/'+str(artifact['id'])+'/zip')
+              digest='sha256:'+hashlib.sha256(data).hexdigest()
+              if artifact.get('digest') and artifact['digest']!=digest: raise RuntimeError('Archive digest mismatch')
+              root=pathlib.Path('results/'+classification).resolve()
+              with zipfile.ZipFile(io.BytesIO(data)) as z:
+                  if sum(f.file_size for f in z.infolist())>4000000: raise RuntimeError('Unexpected artifact size')
+                  for item in z.infolist():
+                      if item.is_dir(): continue
+                      if pathlib.Path(item.filename).name not in ['results.json','run-manifest.json','summary.md','startup-diagnostics.json']: raise RuntimeError('Unexpected evidence file')
+                      dest=(root/item.filename).resolve()
+                      if not dest.is_relative_to(root): raise RuntimeError('Unsafe archive path')
+                      dest.parent.mkdir(parents=True,exist_ok=True)
+                      dest.write_bytes(z.read(item))
+              provenance.append({'workflow_run_id':run_id,'classification':classification,'artifact_id':artifact['id'],'artifact_name':artifact['name'],'archive_sha256':digest.split(':')[1],'source_head_sha':artifact['workflow_run']['head_sha'],'created_at':artifact['created_at']})
+          pathlib.Path('results/approved/provenance.json').write_text(json.dumps(provenance,indent=2)+'\n')
+          pathlib.Path('results/approved/README.md').write_text('# Serie definitiva\n\nTres ejecuciones completas de crAPI del workflow 37225125461. Archivos sanitizados originales, sin JWT, passwords ni cuerpos completos. analysis.json contiene corroboraciones; cases.csv y comparison.md contienen la comparación; checksums.json permite comprobar integridad. Los resultados FAIL son propiedades incumplidas, no errores del runner. Ver docs/05-results-analysis.md para su interpretación.\n')
+          pathlib.Path('results/excluded/README.md').write_text('# Evidencia excluida\n\nUn fallo de arranque (37223791385) y el primer experimento incompleto (37224235724), conservados sin alterar sus resultados. No forman parte de las tres repeticiones definitivas. BLOCKED no es PASS. Ver docs/09-execution-history.md.\n')
+          PY
+      - name: Analyze three complete runs
+        run: |
+          node scripts/analyze.cjs results/approved
+          cat results/approved/comparison.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Export only sanitized UTF-8 evidence for connector publication
+        run: |
+          python3 - <<'PY'
+          import pathlib,json
+          for root in [pathlib.Path('results/approved'),pathlib.Path('results/excluded')]:
+              for file in sorted(root.rglob('*')):
+                  if file.is_file():
+                      print('FILE_EXPORT='+json.dumps({'path':file.as_posix(),'content':file.read_text()}))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: consolidated-api-security-evidence
+          path: |
+            results/approved/
+            results/excluded/
+          retention-days: 90

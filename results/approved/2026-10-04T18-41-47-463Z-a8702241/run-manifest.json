@@ -1,0 +1,97 @@
+{
+  "run_id": "2026-10-04T18-41-47-463Z-a8702241",
+  "started_at": "2026-10-04T18:41:47.464Z",
+  "experiment_status": "COMPLETED",
+  "lab_repository_commit": "f28d50d6412dccc167c5d9b3c7caa1755ba1d610",
+  "crapi": {
+    "repository": "https://github.com/OWASP/crAPI.git",
+    "tag": "v1.1.6-rc8",
+    "commit": "d1cbf263a310ea4ed342e44a21a3ea32431e8ea6",
+    "image_tag": "1.1.6-rc8",
+    "jwt_expiration_ms": 120000,
+    "expiration_grace_ms": 10000,
+    "source_verified_at": "2026-10-04",
+    "runtime_verified": false,
+    "image_digest_lock_status": "fixed_from_publisher_registry_pending_runtime_validation",
+    "image_digests": {
+      "crapi-identity": "crapi/crapi-identity@sha256:5152eaa8b25d8585068ec478c9a2ee886ce1658d8289fd047f83325737490f78",
+      "crapi-web": "crapi/crapi-web@sha256:6cbafa5085cc38199c5f16f71ad11579168e08ca25c22e9b89f55e423caa8746",
+      "crapi-community": "crapi/crapi-community@sha256:ff62181b9089df60379c1cecdcfceb0f54ea6d6c4d7c407bb2f5fd55208f2be0",
+      "crapi-workshop": "crapi/crapi-workshop@sha256:b73a2e4aed1a62ba9c626214eca6b66289f2f5cced7169dbd791837edf263de6",
+      "mailhog": "crapi/mailhog@sha256:c3a74b1f63673996aec82f175ad4dd49cc3152637f68dc3dfc9f765e06c0f5e9",
+      "api.mypremiumdealership.com": "crapi/gateway-service@sha256:111a996957c1e9f78fe401b4d9a16bb99e6d6a3aa836792382a52c9ecbd39c8c",
+      "postgresdb": "postgres@sha256:c2427de38f998489d36de7ca3553db2134872c400f2b08be4b824e5c50e4d619",
+      "mongodb": "mongo@sha256:4be76f674fc4b27859816811b8baa3c51830eb1dbf4ca81a51e26b79edd662ef"
+    }
+  },
+  "collection_sha256": "9bc19d69749a00da0d7f679e927c09970aa0feecae2bdf8f24ffcde6e5aa3bf1",
+  "node": "v22.14.0",
+  "newman": "6.2.1",
+  "os": "linux",
+  "architecture": "x64",
+  "base_url": "http://127.0.0.1:8888",
+  "evidence_policy": "allowlisted observations + hashes; raw secrets omitted",
+  "deployment": {
+    "crapi_commit": "d1cbf263a310ea4ed342e44a21a3ea32431e8ea6",
+    "configured_jwt_expiration_ms": 120000,
+    "docker": "Docker version 28.0.4, build b8034c0",
+    "compose": "Docker Compose version v2.38.2",
+    "started_at": "2026-10-04T18:39:34.541Z",
+    "images": {
+      "api.mypremiumdealership.com": {
+        "tag": "crapi/gateway-service@sha256:111a996957c1e9f78fe401b4d9a16bb99e6d6a3aa836792382a52c9ecbd39c8c",
+        "digest": "crapi/gateway-service@sha256:111a996957c1e9f78fe401b4d9a16bb99e6d6a3aa836792382a52c9ecbd39c8c",
+        "image_id": "sha256:d5fe12e5d1e6e3954505fec4e20d5da3bb34261289d9cbc19a3f889ff913ffb8"
+      },
+      "crapi-community": {
+        "tag": "crapi/crapi-community@sha256:ff62181b9089df60379c1cecdcfceb0f54ea6d6c4d7c407bb2f5fd55208f2be0",
+        "digest": "crapi/crapi-community@sha256:ff62181b9089df60379c1cecdcfceb0f54ea6d6c4d7c407bb2f5fd55208f2be0",
+        "image_id": "sha256:455d9dfd9b49aa9dac5c065a1d645a13f2b5e7b1695ff615feac0746535ed306"
+      },
+      "crapi-identity": {
+        "tag": "crapi/crapi-identity@sha256:5152eaa8b25d8585068ec478c9a2ee886ce1658d8289fd047f83325737490f78",
+        "digest": "crapi/crapi-identity@sha256:5152eaa8b25d8585068ec478c9a2ee886ce1658d8289fd047f83325737490f78",
+        "image_id": "sha256:b5bd2525e31f0c4a44e40497a93a132a5cec541a636ccd988352f2a5e6a11dd2"
+      },
+      "crapi-web": {
+        "tag": "crapi/crapi-web@sha256:6cbafa5085cc38199c5f16f71ad11579168e08ca25c22e9b89f55e423caa8746",
+        "digest": "crapi/crapi-web@sha256:6cbafa5085cc38199c5f16f71ad11579168e08ca25c22e9b89f55e423caa8746",
+        "image_id": "sha256:3377629193f53a84d7e599775adb8873141dd7bcef3b936af11c7865c3045691"
+      },
+      "crapi-workshop": {
+        "tag": "crapi/crapi-workshop@sha256:b73a2e4aed1a62ba9c626214eca6b66289f2f5cced7169dbd791837edf263de6",
+        "digest": "crapi/crapi-workshop@sha256:b73a2e4aed1a62ba9c626214eca6b66289f2f5cced7169dbd791837edf263de6",
+        "image_id": "sha256:d492f5b6628422f7e7790a3b734fb98003c8bcbb846b561f8b60767a7aee70ca"
+      },
+      "mailhog": {
+        "tag": "crapi/mailhog@sha256:c3a74b1f63673996aec82f175ad4dd49cc3152637f68dc3dfc9f765e06c0f5e9",
+        "digest": "crapi/mailhog@sha256:c3a74b1f63673996aec82f175ad4dd49cc3152637f68dc3dfc9f765e06c0f5e9",
+        "image_id": "sha256:cb6e9df77ccab9faf9ddb33179eee08a175ff09f042fb42ec9081f49f80da760"
+      },
+      "mongodb": {
+        "tag": "mongo@sha256:4be76f674fc4b27859816811b8baa3c51830eb1dbf4ca81a51e26b79edd662ef",
+        "digest": "mongo@sha256:4be76f674fc4b27859816811b8baa3c51830eb1dbf4ca81a51e26b79edd662ef",
+        "image_id": "sha256:0010f63d26952bd3960fac5513c64a1cf7d6299f31fa7b54ac1b36633ee04333"
+      },
+      "postgresdb": {
+        "tag": "postgres@sha256:c2427de38f998489d36de7ca3553db2134872c400f2b08be4b824e5c50e4d619",
+        "digest": "postgres@sha256:c2427de38f998489d36de7ca3553db2134872c400f2b08be4b824e5c50e4d619",
+        "image_id": "sha256:e8316dc7ad10433764d3ca090f24602f17b288428e899ef7072d2001de8970fc"
+      }
+    },
+    "resolved_compose_sha256": "1af50dd7cc33eb61957b0b814489760ecbefafdfd3c018deb3035ec7292ce852"
+  },
+  "finished_at": "2026-10-04T18:43:58.086Z",
+  "all_requests_executed": true,
+  "timing": {
+    "iat": 1791139308,
+    "exp": 1791139428,
+    "grace_ms": 10000,
+    "T10_request_at": "2026-10-04T18:41:48.930Z",
+    "token_sha256": "26b904b45efb433be294627e22de7dc6bf7299a2ffb0552b682d353cae0b6fa0",
+    "T10_server_date": "Sun, 04 Oct 2026 18:41:48 GMT",
+    "T11_request_at": "2026-10-04T18:43:58.061Z",
+    "same_token_before_after": true,
+    "T11_server_date": "Sun, 04 Oct 2026 18:43:58 GMT"
+  }
+}

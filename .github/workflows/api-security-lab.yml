@@ -1,0 +1,48 @@
+name: API security experiment
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'experiment/**'
+permissions:
+  contents: read
+jobs:
+  experiment:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22.14.0'
+          cache: npm
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm run validate && npm test
+      - name: Prepare pinned local laboratory
+        run: npm run lab:setup
+      - name: Run collection and preserve outcome
+        id: experiment
+        shell: bash
+        run: |
+          set +e
+          result=0
+          for repetition in 1 2 3; do
+            npm run lab:run
+            current=$?
+            if [ "$current" -eq 2 ] || [ "$current" -eq 3 ]; then result=$current; break; fi
+            if [ "$current" -eq 1 ]; then result=1; fi
+          done
+          echo "exit_code=$result" >> "$GITHUB_OUTPUT"
+          cat results/runs/*/summary.md >> "$GITHUB_STEP_SUMMARY"
+          if [ "$result" -eq 2 ] || [ "$result" -eq 3 ]; then exit "$result"; fi
+      - name: Preserve sanitized evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: api-security-evidence-${{ github.run_id }}
+          path: results/runs/
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Stop laboratory
+        if: always()
+        run: npm run lab:down
