@@ -41,8 +41,10 @@ test('Newman runner processes complete synthetic sequence, two-owner controls an
   
   const mail=http.createServer((_req,res)=>{res.writeHead(200,{'content-type':'application/json'});
     res.end(JSON.stringify({items:[...users.keys()].filter(email=>email.startsWith('lab-')).map(email=>({
-      To:[{Mailbox:email.split('@')[0],Domain:'example.com'}],Content:email.startsWith('lab-a-')?
-        {Headers:{'Content-Transfer-Encoding':['base64']},Body:Buffer.from('<b>VIN: </b><font>'+ 'A'.repeat(17)+'</font> Pincode: <b>1234</b>').toString('base64')}:
+      To:[{Mailbox:email.split('@')[0],Domain:'example.com'}],
+      Raw:email.startsWith('lab-a-')?{Data:'Content-Type: text/html\r\nContent-Transfer-Encoding: base64\r\n\r\n'+Buffer.from('<b>VIN: </b><font>'+ 'A'.repeat(17)+'</font> Pincode: <b>1234</b>').toString('base64')}:null,
+      Content:email.startsWith('lab-a-')?
+        {Headers:{'Content-Transfer-Encoding':['base64']},Body:''}:
         {Headers:{'Content-Transfer-Encoding':['quoted-printable']},Body:'<b>VIN: </b><font face=3D"calibri">BBBBBBBBB=\r\nBBBBBBBB</font> Pincode: <b>1234</b>'}
     }))}));
   });

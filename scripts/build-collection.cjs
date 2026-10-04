@@ -48,7 +48,8 @@ for(const who of ['a','b']){
 const messages=pm.response.json().items || [];
 const message=messages.find(m=>(m.To || []).some(t=>t.Mailbox+'@'+t.Domain===email) || (m.Content?.Headers?.To || []).some(t=>t.includes(email)));
 const encoding=(message?.Content?.Headers?.['Content-Transfer-Encoding'] || [''])[0].toLowerCase();
-let html=message?.Content?.Body || '';
+// MailHog MongoDB List projects Content.Headers but omits Content.Body; Raw.Data is retained.
+let html=message?.Content?.Body || (message?.Raw?.Data || '').replace(/^[\\s\\S]*?\\r?\\n\\r?\\n/,'');
 if(encoding==='base64')html=atob(html.replace(/\\s/g,''));
 if(encoding==='quoted-printable')html=html.replace(/=\\r?\\n/g,'').replace(/=([0-9a-f]{2})/gi,(_m,h)=>String.fromCharCode(parseInt(h,16)));
 const text=html.replace(/<[^>]*>/g,'');
