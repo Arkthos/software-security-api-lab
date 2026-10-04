@@ -10,7 +10,7 @@
 - [x] Repositorio `Arkthos/software-security-api-lab` privado creado por el propietario, rama main inicializada con README.
 - [x] Publicar incremento en rama `feat/reproducible-lab-v0.1` y PR #1.
 - [x] Validación CI del primer commit aprobada; repetir ante cambios posteriores.
-- [ ] Verificar el último head del PR #1 y mergearlo desde la cuenta del propietario.
+- El estado vigente del merge y sus checks se consulta en [PR #1](https://github.com/Arkthos/software-security-api-lab/pull/1).
 - [ ] Ejecutar crAPI real y reparar problemas de preparación/instrumentación.
 
 ## Incremento 0.2: completar autorización
@@ -39,3 +39,11 @@
 ## Retomar
 
 Leer README, este roadmap y docs/05-results-analysis.md. Verificar PRs/workflows existentes antes de repetir operaciones. Recuperar el último artifact y run-manifest; no inventar progreso perdido. Los pushes/merges se gestionan desde esta conversación con la cuenta Arkthos. Los workflows no publican commits automáticamente.
+
+## Backlog en GitHub
+
+- [Issue #2: primer despliegue real](https://github.com/Arkthos/software-security-api-lab/issues/2).
+- [Issue #3: BOLA y función privilegiada](https://github.com/Arkthos/software-security-api-lab/issues/3).
+- [Issue #4: repeticiones, análisis e informe](https://github.com/Arkthos/software-security-api-lab/issues/4).
+
+Validación local de v0.1: seis pruebas del instrumento aprobadas, incluida una ejecución Newman sintética. El workflow de validación comprueba el mismo instrumento en GitHub.
