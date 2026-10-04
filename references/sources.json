@@ -1,0 +1,44 @@
+[
+  {
+    "id": "OWASP-API-2023",
+    "citation": "OWASP Foundation. (2023). OWASP API Security Top 10 – 2023.",
+    "url": "https://api-security.owasp.org/editions/2023/en/0x11-t10/",
+    "locator": "API1, API2 y API5",
+    "support": "Taxonomía de autorización por objeto/función y autenticación.",
+    "limitation": "No define el contrato de cada endpoint; comprobar datos y política antes de clasificar."
+  },
+  {
+    "id": "RFC7519",
+    "citation": "Jones, M., Bradley, J., & Sakimura, N. (2015). JSON Web Token (JWT) (RFC 7519). IETF.",
+    "url": "https://www.rfc-editor.org/rfc/rfc7519.html",
+    "locator": "§4.1.4, §4.1.6",
+    "support": "Si exp está presente, el token no debe aceptarse a partir de ese instante; el protocolo permite una tolerancia de reloj acotada.",
+    "limitation": "No exige exp en todos los JWT. La política de tolerancia debe declararse; no identifica OAuth."
+  },
+  {
+    "id": "RFC9110",
+    "citation": "Fielding, R., Nottingham, M., & Reschke, J. (2022). HTTP Semantics (RFC 9110). IETF.",
+    "url": "https://www.rfc-editor.org/rfc/rfc9110.html",
+    "locator": "§15.5.2, §15.5.4 y §15.5.5",
+    "support": "Semántica de 401, 403 y 404 para interpretar respuestas.",
+    "limitation": "Un código de estado no prueba ausencia de exposición; 401 debe incluir WWW-Authenticate. Ese encabezado queda pendiente de comprobación."
+  },
+  {
+    "id": "ATLIDAKIS-2020",
+    "citation": "Atlidakis, V., Godefroid, P., & Polishchuk, M. (2020). Checking Security Properties of Cloud Service REST APIs. 2020 IEEE 13th International Conference on Software Testing, Validation and Verification (ICST), 387–397.",
+    "doi": "10.1109/ICST46399.2020.00046",
+    "url": "https://patricegodefroid.github.io/public_psfiles/icst2020.pdf",
+    "locator": "§II y §III.A, regla user-namespace",
+    "support": "Secuencias de solicitudes y propiedades verificables; recursos de un espacio de usuario no deben ser accesibles desde otro.",
+    "limitation": "No reproducimos el fuzzer o su evaluación; adoptamos propiedades y lógica experimental."
+  },
+  {
+    "id": "SALTZER-1975",
+    "citation": "Saltzer, J. H., & Schroeder, M. D. (1975). The protection of information in computer systems. Proceedings of the IEEE, 63(9), 1278–1308.",
+    "doi": "10.1109/PROC.1975.9939",
+    "url": "https://web.mit.edu/saltzer/www/publications/protection/Basic.html",
+    "locator": "§I.A.3: design principles",
+    "support": "Mediación completa, mínimo privilegio y denegación por defecto.",
+    "limitation": "Principios de diseño, no evidencia empírica de los resultados de crAPI."
+  }
+]

@@ -1,0 +1,142 @@
+[
+  {
+    "id": "T01",
+    "name": "Login válido",
+    "category": "authentication",
+    "implementation": "implemented",
+    "preconditions": "Usuario A registrado",
+    "change": "Credenciales A válidas",
+    "expected": "200 y JWT estructuralmente válido",
+    "sources": [
+      "OWASP-API-2023"
+    ]
+  },
+  {
+    "id": "T02",
+    "name": "Contraseña incorrecta",
+    "category": "authentication",
+    "implementation": "implemented",
+    "preconditions": "Usuario A registrado",
+    "change": "Solo cambia password",
+    "expected": "401/403 sin token o datos protegidos",
+    "sources": [
+      "OWASP-API-2023",
+      "RFC9110"
+    ]
+  },
+  {
+    "id": "T03",
+    "name": "Dashboard sin token",
+    "category": "authentication",
+    "implementation": "implemented",
+    "preconditions": "Endpoint de dashboard existente",
+    "change": "Sin Authorization",
+    "expected": "401/403 sin datos del usuario",
+    "sources": [
+      "OWASP-API-2023",
+      "RFC9110"
+    ]
+  },
+  {
+    "id": "T04",
+    "name": "Firma JWT alterada",
+    "category": "authentication",
+    "implementation": "implemented",
+    "preconditions": "Token A válido de T01",
+    "change": "Se altera el primer carácter de la firma",
+    "expected": "401/403 sin datos protegidos",
+    "sources": [
+      "OWASP-API-2023",
+      "RFC7519"
+    ]
+  },
+  {
+    "id": "T05",
+    "name": "Acceso al dashboard propio",
+    "category": "authorization",
+    "implementation": "implemented",
+    "preconditions": "Token A válido",
+    "change": "Sin cambio; control positivo",
+    "expected": "200 y email de A",
+    "sources": [
+      "SALTZER-1975"
+    ]
+  },
+  {
+    "id": "T06",
+    "name": "Ubicación de vehículo de otro propietario",
+    "category": "authorization",
+    "implementation": "planned",
+    "preconditions": "Dos identidades y vehículos vinculados; propietarios verificados",
+    "change": "Token A con UUID del vehículo B; compararlo con token B",
+    "expected": "403/404 sin ubicación o datos del objeto B",
+    "sources": [
+      "OWASP-API-2023",
+      "ATLIDAKIS-2020",
+      "SALTZER-1975"
+    ]
+  },
+  {
+    "id": "T07",
+    "name": "Función privilegiada",
+    "category": "authorization",
+    "implementation": "planned",
+    "preconditions": "Política de rol y control positivo privilegiado verificados",
+    "change": "Identidad ordinaria en función privilegiada",
+    "expected": "Denegación y ausencia de datos/efectos privilegiados",
+    "sources": [
+      "OWASP-API-2023",
+      "SALTZER-1975"
+    ]
+  },
+  {
+    "id": "T08",
+    "name": "Login antes de existir la cuenta",
+    "category": "state",
+    "implementation": "implemented",
+    "preconditions": "Email único generado por ejecución",
+    "change": "Antes de signup",
+    "expected": "401/403 sin token",
+    "sources": [
+      "ATLIDAKIS-2020",
+      "RFC9110"
+    ]
+  },
+  {
+    "id": "T09",
+    "name": "Acceso posterior a signup/login",
+    "category": "state",
+    "implementation": "implemented",
+    "preconditions": "Mismo email de T08; signup y login exitosos",
+    "change": "Cuenta pasa de inexistente a existente",
+    "expected": "Dashboard 200 correspondiente a A",
+    "sources": [
+      "ATLIDAKIS-2020"
+    ]
+  },
+  {
+    "id": "T10",
+    "name": "JWT antes de exp",
+    "category": "time",
+    "implementation": "implemented",
+    "preconditions": "Token nuevo, exp-iat entre 115 y 125 s",
+    "change": "Acceso antes de exp",
+    "expected": "200, identidad A y marca temporal anterior a exp",
+    "sources": [
+      "RFC7519"
+    ]
+  },
+  {
+    "id": "T11",
+    "name": "Mismo JWT después de exp",
+    "category": "time",
+    "implementation": "implemented",
+    "preconditions": "T10 válido; mismo token, recurso y endpoint",
+    "change": "Esperar hasta exp + 10 s",
+    "expected": "401/403 sin datos; misma huella JWT y marca posterior a exp+10 s",
+    "sources": [
+      "RFC7519",
+      "OWASP-API-2023"
+    ]
+  }
+]

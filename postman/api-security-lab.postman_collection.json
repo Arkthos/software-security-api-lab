@@ -1,0 +1,552 @@
+{
+  "info": {
+    "name": "API Security Lab v0.1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "crAPI v1.1.6; solo localhost. T06 y T07 pendientes de fixtures/oráculo. Ver docs/04-test-plan.md."
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "if (pm.collectionVariables.get('base_url') !== 'http://127.0.0.1:8888') throw new Error('Only the local crAPI laboratory is supported');"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8888"
+    },
+    {
+      "key": "user_a_email",
+      "value": ""
+    },
+    {
+      "key": "user_b_email",
+      "value": ""
+    },
+    {
+      "key": "lab_password",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "T08 | Login before account creation",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/identity/api/auth/login",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"{{user_a_email}}\",\"password\":\"{{lab_password}}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('SECURITY: denied without token or protected data', function () {",
+              "  pm.expect([401,403]).to.include(pm.response.code);",
+              "  let b = {}; try { b = pm.response.json(); } catch (_) {}",
+              "  pm.expect(Boolean(b.token || b.email || b.vehicleLocation)).to.equal(false);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "SETUP | Create user A",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/identity/api/auth/signup",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"{{user_a_email}}\",\"password\":\"{{lab_password}}\",\"name\":\"Lab A\",\"number\":\"7000000001\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('PRECONDITION: new account created', () => {pm.expect(pm.response.code).to.equal(200);});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "SETUP | Create user B",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/identity/api/auth/signup",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"{{user_b_email}}\",\"password\":\"{{lab_password}}\",\"name\":\"Lab B\",\"number\":\"7000000002\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('PRECONDITION: new account created', () => {pm.expect(pm.response.code).to.equal(200);});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T01 | Valid login A",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/identity/api/auth/login",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"{{user_a_email}}\",\"password\":\"{{lab_password}}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('PRECONDITION: login produces JWT', function () {",
+              "  pm.expect(pm.response.code).to.equal(200);",
+              "  const b = pm.response.json(); pm.expect(b.token).to.be.a('string');",
+              "  pm.expect(b.token.split('.').length).to.equal(3);",
+              "  pm.collectionVariables.set('token_a', b.token);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "SETUP | Valid login B",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/identity/api/auth/login",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"{{user_b_email}}\",\"password\":\"{{lab_password}}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('PRECONDITION: login produces JWT', function () {",
+              "  pm.expect(pm.response.code).to.equal(200);",
+              "  const b = pm.response.json(); pm.expect(b.token).to.be.a('string');",
+              "  pm.expect(b.token.split('.').length).to.equal(3);",
+              "  pm.collectionVariables.set('token_b', b.token);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T02 | Wrong password",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/identity/api/auth/login",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"{{user_a_email}}\",\"password\":\"Incorrect-Lab-Password!\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('SECURITY: denied without token or protected data', function () {",
+              "  pm.expect([401,403]).to.include(pm.response.code);",
+              "  let b = {}; try { b = pm.response.json(); } catch (_) {}",
+              "  pm.expect(Boolean(b.token || b.email || b.vehicleLocation)).to.equal(false);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T03 | Dashboard without token",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/identity/api/v2/user/dashboard",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('SECURITY: denied without token or protected data', function () {",
+              "  pm.expect([401,403]).to.include(pm.response.code);",
+              "  let b = {}; try { b = pm.response.json(); } catch (_) {}",
+              "  pm.expect(Boolean(b.token || b.email || b.vehicleLocation)).to.equal(false);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T04 | Dashboard with altered signature",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{modified_token}}"
+          }
+        ],
+        "url": "{{base_url}}/identity/api/v2/user/dashboard",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const parts = pm.collectionVariables.get('token_a').split('.');",
+              "parts[2] = (parts[2][0] === 'A' ? 'B' : 'A') + parts[2].slice(1);",
+              "pm.collectionVariables.set('modified_token', parts.join('.'));"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('SECURITY: denied without token or protected data', function () {",
+              "  pm.expect([401,403]).to.include(pm.response.code);",
+              "  let b = {}; try { b = pm.response.json(); } catch (_) {}",
+              "  pm.expect(Boolean(b.token || b.email || b.vehicleLocation)).to.equal(false);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T05 | Own dashboard",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_a}}"
+          }
+        ],
+        "url": "{{base_url}}/identity/api/v2/user/dashboard",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('SECURITY: own dashboard identity', function () {",
+              "  pm.expect(pm.response.code).to.equal(200);",
+              "  pm.expect(pm.response.json().email).to.equal(pm.collectionVariables.get('user_a_email'));",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T09 | Dashboard after signup and login",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_a}}"
+          }
+        ],
+        "url": "{{base_url}}/identity/api/v2/user/dashboard",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('SECURITY: own dashboard identity', function () {",
+              "  pm.expect(pm.response.code).to.equal(200);",
+              "  pm.expect(pm.response.json().email).to.equal(pm.collectionVariables.get('user_a_email'));",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TIME-SETUP | Fresh login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/identity/api/auth/login",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"{{user_a_email}}\",\"password\":\"{{lab_password}}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('PRECONDITION: login produces JWT', function () {",
+              "  pm.expect(pm.response.code).to.equal(200);",
+              "  const b = pm.response.json(); pm.expect(b.token).to.be.a('string');",
+              "  pm.expect(b.token.split('.').length).to.equal(3);",
+              "  pm.collectionVariables.set('token_time', b.token);",
+              "});",
+              "const b = pm.response.json();",
+              "const p = JSON.parse(atob(b.token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));",
+              "pm.test('PRECONDITION: bounded temporal token', () => {",
+              "  pm.expect(p.exp).to.be.a('number'); pm.expect(p.iat).to.be.a('number');",
+              "  pm.expect(p.exp - p.iat).to.be.within(115,125);",
+              "});",
+              "pm.collectionVariables.set('token_time_exp', p.exp);",
+              "pm.collectionVariables.set('token_time_iat', p.iat);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T10 | Same token before expiration",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_time}}"
+          }
+        ],
+        "url": "{{base_url}}/identity/api/v2/user/dashboard",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('SECURITY: own dashboard identity', function () {",
+              "  pm.expect(pm.response.code).to.equal(200);",
+              "  pm.expect(pm.response.json().email).to.equal(pm.collectionVariables.get('user_a_email'));",
+              "});",
+              "pm.test('PRECONDITION: request before exp', () => {",
+              "  pm.expect(Date.now()/1000).to.be.below(Number(pm.collectionVariables.get('token_time_exp')));",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T11 | Same token after expiration",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_time}}"
+          }
+        ],
+        "url": "{{base_url}}/identity/api/v2/user/dashboard",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const waitMs = Number(pm.collectionVariables.get('token_time_exp'))*1000 + 10000 - Date.now();",
+              "if (!Number.isFinite(waitMs) || waitMs > 140000) throw new Error('Invalid temporal precondition');",
+              "setTimeout(function(){}, Math.max(0,waitMs));"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('SECURITY: denied without token or protected data', function () {",
+              "  pm.expect([401,403]).to.include(pm.response.code);",
+              "  let b = {}; try { b = pm.response.json(); } catch (_) {}",
+              "  pm.expect(Boolean(b.token || b.email || b.vehicleLocation)).to.equal(false);",
+              "});",
+              "pm.test('PRECONDITION: request after exp plus grace', () => {",
+              "  pm.expect(Date.now()).to.be.at.least(Number(pm.collectionVariables.get('token_time_exp'))*1000 + 10000);",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

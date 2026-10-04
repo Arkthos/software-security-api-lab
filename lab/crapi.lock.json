@@ -1,0 +1,11 @@
+{
+  "repository": "https://github.com/OWASP/crAPI.git",
+  "tag": "v1.1.6",
+  "commit": "700f03d12a392d9e408260b4beae72ed02a4a1a4",
+  "image_tag": "1.1.6",
+  "jwt_expiration_ms": 120000,
+  "expiration_grace_ms": 10000,
+  "source_verified_at": "2026-10-04",
+  "runtime_verified": false,
+  "image_digest_lock_status": "pending_first_docker_run"
+}
