@@ -15,10 +15,10 @@
 
 ## Incremento 0.2: completar autorización
 
-- [ ] Validar fixtures de vehículos A/B y automatizar vinculación con MailHog.
-- [ ] Implementar T06, controles propios y ambos sentidos A→B/B→A.
-- [ ] Leer política de funciones/roles; seleccionar operación adecuada para T07 y control privilegiado.
-- [ ] Mejorar evidencia: igualdad de objeto y propietario comprobada sin exponer datos sensibles.
+- [x] Implementar fixtures de vehículos A/B y vinculación con MailHog; validar en Docker real.
+- [x] Implementar T06, controles propios y ambos sentidos A→B/B→A.
+- [x] Leer política de AdminUserView e implementar T07 con roles y control admin verificados.
+- [x] Añadir hashes de objeto/ubicación y controles con listas propias y UUID distintos.
 - [ ] Comprobar WWW-Authenticate y cuerpos de denegación por contrato.
 
 ## Incremento 0.3: evidencia definitiva

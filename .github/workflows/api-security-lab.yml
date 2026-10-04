@@ -1,6 +1,9 @@
 name: API security experiment
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - 'experiment/**'
 permissions:
   contents: read
 jobs:
@@ -25,6 +28,7 @@ jobs:
           npm run lab:run
           result=$?
           echo "exit_code=$result" >> "$GITHUB_OUTPUT"
+          cat results/runs/*/summary.md >> "$GITHUB_STEP_SUMMARY"
           if [ "$result" -eq 2 ]; then exit 2; fi
       - name: Preserve sanitized evidence
         if: always()

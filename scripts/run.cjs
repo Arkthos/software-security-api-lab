@@ -28,7 +28,10 @@ const save = () => {
 save();
 const collection=JSON.parse(fs.readFileSync(collectionPath));
 const values={user_a_email:`lab-a-${stamp}@example.com`,user_b_email:`lab-b-${stamp}@example.com`,
-  lab_password:`Lab-${crypto.randomBytes(16).toString('hex')}!Aa1`};
+  lab_password:`Lab-${crypto.randomBytes(16).toString('hex')}!Aa1`,
+  user_a_number:'7'+String(crypto.randomInt(1000000000)).padStart(9,'0'),
+  user_b_number:'8'+String(crypto.randomInt(1000000000)).padStart(9,'0'),
+  admin_email:'admin@example.com',admin_password:'Admin!123'}; // Public, synthetic crAPI seed account, not a personal credential.
 for(const variable of collection.variable) if(variable.key in values) variable.value=values[variable.key];
 const run = newman.run({collection,
   reporters:[],timeoutRequest:15000,timeoutScript:150000,timeout:420000,
@@ -43,14 +46,12 @@ const run = newman.run({collection,
     applyDependencies(rows);
     const status = err || !summary ? 'ERROR' : rows.some(r=>r.outcome==='ERROR'||r.outcome==='BLOCKED')?'INCOMPLETE':'COMPLETED';
     manifest.finished_at = new Date().toISOString(); manifest.experiment_status=status;
-    rows.push({test_id:'T06',name:'Cross-user vehicle location',outcome:'BLOCKED',reason:'Two linked vehicles with verified distinct owners are required; not implemented in v0.1.'},
-      {test_id:'T07',name:'Privileged function',outcome:'BLOCKED',reason:'Role policy and privileged baseline pending; not implemented in v0.1.'});
-    manifest.experiment_status = status==='ERROR'?'ERROR':'INCOMPLETE';
+    manifest.experiment_status = status;
     save();
     fs.writeFileSync(path.join(out,'summary.md'),`# Ejecución ${runId}\n\nEstado: ${manifest.experiment_status}.\n\n| Caso | Resultado | HTTP |\n|---|---|---|\n`+
       rows.map(r=>`| ${r.name} | ${r.outcome} | ${r.http_status??'-'} |`).join('\n')+'\n\nFAIL indica una propiedad incumplida; requiere análisis. BLOCKED no es PASS.\n');
     console.log('Evidence saved: results/runs/' + runId);
-    process.exitCode = err || rows.some(r=>r.outcome==='ERROR') ? 2 : rows.some(r=>r.outcome==='FAIL') ? 1 : 3;
+    process.exitCode = err || rows.some(r=>r.outcome==='ERROR') ? 2 : rows.some(r=>r.outcome==='BLOCKED') ? 3 : rows.some(r=>r.outcome==='FAIL') ? 1 : 0;
   });
 run.on('beforeRequest',(_err,args)=>{
   requestTimes.set(args.item.name,new Date().toISOString());

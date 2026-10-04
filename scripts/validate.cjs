@@ -8,7 +8,7 @@ const sourceIds=new Set(require('../references/sources.json').map(s=>s.id));
 const names=new Set();
 for(const item of collection.item){
   if(names.has(item.name))throw new Error('Duplicate request');names.add(item.name);
-  if(!item.request.url.startsWith('{{base_url}}/'))throw new Error('Unexpected target');
+  if(!item.request.url.startsWith('{{base_url}}/') && !item.request.url.startsWith('http://127.0.0.1:8025/api/v2/messages'))throw new Error('Unexpected target');
   for(const event of item.event || [])new vm.Script(event.script.exec.join('\n'));
 }
 for(const c of cases){

@@ -1,8 +1,8 @@
 {
   "info": {
-    "name": "API Security Lab v0.1",
+    "name": "API Security Lab v1.0",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": "crAPI v1.1.6; solo localhost. T06 y T07 pendientes de fixtures/oráculo. Ver docs/04-test-plan.md."
+    "description": "crAPI v1.1.6; solo localhost. T01–T11 con controles de propietarios y roles. Ver docs/04-test-plan.md."
   },
   "event": [
     {
@@ -30,6 +30,22 @@
     },
     {
       "key": "lab_password",
+      "value": ""
+    },
+    {
+      "key": "user_a_number",
+      "value": ""
+    },
+    {
+      "key": "user_b_number",
+      "value": ""
+    },
+    {
+      "key": "admin_email",
+      "value": "admin@example.com"
+    },
+    {
+      "key": "admin_password",
       "value": ""
     }
   ],
@@ -90,7 +106,7 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\"email\":\"{{user_a_email}}\",\"password\":\"{{lab_password}}\",\"name\":\"Lab A\",\"number\":\"7000000001\"}",
+          "raw": "{\"email\":\"{{user_a_email}}\",\"password\":\"{{lab_password}}\",\"name\":\"Lab A\",\"number\":\"{{user_a_number}}\"}",
           "options": {
             "raw": {
               "language": "json"
@@ -126,7 +142,7 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\"email\":\"{{user_b_email}}\",\"password\":\"{{lab_password}}\",\"name\":\"Lab B\",\"number\":\"7000000002\"}",
+          "raw": "{\"email\":\"{{user_b_email}}\",\"password\":\"{{lab_password}}\",\"name\":\"Lab B\",\"number\":\"{{user_b_number}}\"}",
           "options": {
             "raw": {
               "language": "json"
@@ -269,7 +285,7 @@
       ]
     },
     {
-      "name": "T03 | Dashboard without token",
+      "name": "T03 | Protected vehicles without token",
       "request": {
         "method": "GET",
         "header": [
@@ -278,7 +294,7 @@
             "value": "application/json"
           }
         ],
-        "url": "{{base_url}}/identity/api/v2/user/dashboard",
+        "url": "{{base_url}}/identity/api/v2/vehicle/vehicles",
         "auth": {
           "type": "noauth"
         }
@@ -414,6 +430,513 @@
       ]
     },
     {
+      "name": "FIXTURE | Read vehicle email A",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "http://127.0.0.1:8025/api/v2/messages?limit=100",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const email=pm.collectionVariables.get('user_a_email');",
+              "const messages=pm.response.json().items || [];",
+              "const message=messages.find(m=>(m.To || []).some(t=>t.Mailbox+'@'+t.Domain===email) || (m.Content?.Headers?.To || []).some(t=>t.includes(email)));",
+              "const text=(message?.Content?.Body || '').replace(/=\\r?\\n/g,'').replace(/<[^>]*>/g,'');",
+              "const vin=text.match(/VIN:\\s*([A-Z0-9]{17})/i)?.[1];",
+              "const pin=text.match(/Pincode:\\s*(\\d+)/i)?.[1];",
+              "pm.test('PRECONDITION: own vehicle email found',()=>{pm.expect(pm.response.code).to.equal(200);pm.expect(vin).to.be.a('string');pm.expect(pin).to.be.a('string');});",
+              "pm.collectionVariables.set('vin_a',vin);pm.collectionVariables.set('pin_a',pin);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "FIXTURE | Link vehicle A",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_a}}"
+          }
+        ],
+        "url": "{{base_url}}/identity/api/v2/vehicle/add_vehicle",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"vin\":\"{{vin_a}}\",\"pincode\":\"{{pin_a}}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('PRECONDITION: vehicle linked',()=>pm.expect(pm.response.code).to.equal(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "CONTROL | Owned vehicles A",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_a}}"
+          }
+        ],
+        "url": "{{base_url}}/identity/api/v2/vehicle/vehicles",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const b=pm.response.json();",
+              "pm.test('PRECONDITION: one own vehicle exists',()=>{pm.expect(pm.response.code).to.equal(200);pm.expect(b).to.be.an('array');pm.expect(b.length).to.equal(1);pm.expect(b[0].uuid).to.be.a('string');});",
+              "pm.collectionVariables.set('object_a_id',b[0]?.uuid);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "CONTROL | Own location A",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_a}}"
+          }
+        ],
+        "url": "{{base_url}}/identity/api/v2/vehicle/{{object_a_id}}/location",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const b=pm.response.json();",
+              "pm.test('PRECONDITION: own location matches own object',()=>{pm.expect(pm.response.code).to.equal(200);pm.expect(b.carId).to.equal(pm.collectionVariables.get('object_a_id'));pm.expect(b.vehicleLocation).to.be.an('object');});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "FIXTURE | Read vehicle email B",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "http://127.0.0.1:8025/api/v2/messages?limit=100",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const email=pm.collectionVariables.get('user_b_email');",
+              "const messages=pm.response.json().items || [];",
+              "const message=messages.find(m=>(m.To || []).some(t=>t.Mailbox+'@'+t.Domain===email) || (m.Content?.Headers?.To || []).some(t=>t.includes(email)));",
+              "const text=(message?.Content?.Body || '').replace(/=\\r?\\n/g,'').replace(/<[^>]*>/g,'');",
+              "const vin=text.match(/VIN:\\s*([A-Z0-9]{17})/i)?.[1];",
+              "const pin=text.match(/Pincode:\\s*(\\d+)/i)?.[1];",
+              "pm.test('PRECONDITION: own vehicle email found',()=>{pm.expect(pm.response.code).to.equal(200);pm.expect(vin).to.be.a('string');pm.expect(pin).to.be.a('string');});",
+              "pm.collectionVariables.set('vin_b',vin);pm.collectionVariables.set('pin_b',pin);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "FIXTURE | Link vehicle B",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_b}}"
+          }
+        ],
+        "url": "{{base_url}}/identity/api/v2/vehicle/add_vehicle",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"vin\":\"{{vin_b}}\",\"pincode\":\"{{pin_b}}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('PRECONDITION: vehicle linked',()=>pm.expect(pm.response.code).to.equal(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "CONTROL | Owned vehicles B",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_b}}"
+          }
+        ],
+        "url": "{{base_url}}/identity/api/v2/vehicle/vehicles",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const b=pm.response.json();",
+              "pm.test('PRECONDITION: one own vehicle exists',()=>{pm.expect(pm.response.code).to.equal(200);pm.expect(b).to.be.an('array');pm.expect(b.length).to.equal(1);pm.expect(b[0].uuid).to.be.a('string');});",
+              "pm.collectionVariables.set('object_b_id',b[0]?.uuid);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "CONTROL | Own location B",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_b}}"
+          }
+        ],
+        "url": "{{base_url}}/identity/api/v2/vehicle/{{object_b_id}}/location",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const b=pm.response.json();",
+              "pm.test('PRECONDITION: own location matches own object',()=>{pm.expect(pm.response.code).to.equal(200);pm.expect(b.carId).to.equal(pm.collectionVariables.get('object_b_id'));pm.expect(b.vehicleLocation).to.be.an('object');});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T06 | Cross-user location A to B",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_a}}"
+          }
+        ],
+        "url": "{{base_url}}/identity/api/v2/vehicle/{{object_b_id}}/location",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('PRECONDITION: objects are distinct',()=>pm.expect(pm.collectionVariables.get('object_a_id')).not.to.equal(pm.collectionVariables.get('object_b_id')));",
+              "pm.test('SECURITY: other owner location denied',()=>{pm.expect([403,404]).to.include(pm.response.code);const b=pm.response.json();pm.expect(Boolean(b.vehicleLocation || b.carId)).to.equal(false);});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T06 | Cross-user location B to A",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_b}}"
+          }
+        ],
+        "url": "{{base_url}}/identity/api/v2/vehicle/{{object_a_id}}/location",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('PRECONDITION: objects are distinct',()=>pm.expect(pm.collectionVariables.get('object_a_id')).not.to.equal(pm.collectionVariables.get('object_b_id')));",
+              "pm.test('SECURITY: other owner location denied',()=>{pm.expect([403,404]).to.include(pm.response.code);const b=pm.response.json();pm.expect(Boolean(b.vehicleLocation || b.carId)).to.equal(false);});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "CONTROL | Admin login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/identity/api/auth/login",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"{{admin_email}}\",\"password\":\"{{admin_password}}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('PRECONDITION: login produces JWT', function () {",
+              "  pm.expect(pm.response.code).to.equal(200);",
+              "  const b = pm.response.json(); pm.expect(b.token).to.be.a('string');",
+              "  pm.expect(b.token.split('.').length).to.equal(3);",
+              "  pm.collectionVariables.set('token_admin', b.token);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "CONTROL | Admin identity",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_admin}}"
+          }
+        ],
+        "url": "{{base_url}}/identity/api/v2/user/dashboard",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('PRECONDITION: actual admin role',()=>{pm.expect(pm.response.code).to.equal(200);pm.expect(pm.response.json().role).to.equal('ROLE_ADMIN');});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "CONTROL | Ordinary identity",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_a}}"
+          }
+        ],
+        "url": "{{base_url}}/identity/api/v2/user/dashboard",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('PRECONDITION: ordinary role',()=>{pm.expect(pm.response.code).to.equal(200);pm.expect(pm.response.json().role).to.equal('ROLE_USER');});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "CONTROL | Admin user listing",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_admin}}"
+          }
+        ],
+        "url": "{{base_url}}/workshop/api/management/users/all?limit=100",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('PRECONDITION: admin listing available',()=>{pm.expect(pm.response.code).to.equal(200);pm.expect(pm.response.json().users).to.be.an('array');pm.expect(pm.response.json().users.length).to.be.above(1);});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T07 | Ordinary user attempts admin listing",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_a}}"
+          }
+        ],
+        "url": "{{base_url}}/workshop/api/management/users/all?limit=100",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('SECURITY: admin function denied for ordinary role',()=>{pm.expect([403,404]).to.include(pm.response.code);const b=pm.response.json();pm.expect(Array.isArray(b.users)&&b.users.length>0).to.equal(false);});"
+            ]
+          }
+        }
+      ]
+    },
+    {
       "name": "TIME-SETUP | Fresh login",
       "request": {
         "method": "POST",
@@ -476,7 +999,7 @@
             "value": "Bearer {{token_time}}"
           }
         ],
-        "url": "{{base_url}}/identity/api/v2/user/dashboard",
+        "url": "{{base_url}}/identity/api/v2/vehicle/vehicles",
         "auth": {
           "type": "noauth"
         }
@@ -487,10 +1010,7 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "pm.test('SECURITY: own dashboard identity', function () {",
-              "  pm.expect(pm.response.code).to.equal(200);",
-              "  pm.expect(pm.response.json().email).to.equal(pm.collectionVariables.get('user_a_email'));",
-              "});",
+              "pm.test('SECURITY: own authenticated vehicle list',()=>{const b=pm.response.json();pm.expect(pm.response.code).to.equal(200);pm.expect(b).to.be.an('array');pm.expect(b.some(v=>v.uuid===pm.collectionVariables.get('object_a_id'))).to.equal(true);});",
               "pm.test('PRECONDITION: request before exp', () => {",
               "  pm.expect(Date.now()/1000).to.be.below(Number(pm.collectionVariables.get('token_time_exp')));",
               "});"
@@ -513,7 +1033,7 @@
             "value": "Bearer {{token_time}}"
           }
         ],
-        "url": "{{base_url}}/identity/api/v2/user/dashboard",
+        "url": "{{base_url}}/identity/api/v2/vehicle/vehicles",
         "auth": {
           "type": "noauth"
         }

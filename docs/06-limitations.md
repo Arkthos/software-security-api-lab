@@ -1,7 +1,7 @@
 # Limitaciones
 
 - crAPI contiene fallos intencionales; no representa una muestra de APIs de producción.
-- T06/T07 aún no se implementaron; T05 cubre identidad del dashboard, no aislamiento entre objetos.
+- T06/T07 cuentan con implementación y controles; su ejecución real debe validarse. T05 cubre identidad del dashboard y T06 aislamiento de ubicaciones de vehículos.
 - No se ensayan OAuth, refresh tokens, logout/revocación ni roles cambiados durante una sesión.
 - T08/T09 cubren estado de cuenta; no cubren TOCTOU, concurrencia o eliminación de recursos.
 - La tolerancia temporal experimental es 10 s; confirmar reloj/configuración antes de evaluar como vulnerabilidad.

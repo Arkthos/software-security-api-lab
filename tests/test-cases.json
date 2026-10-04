@@ -26,12 +26,12 @@
   },
   {
     "id": "T03",
-    "name": "Dashboard sin token",
+    "name": "Endpoint autenticado de vehículos sin token",
     "category": "authentication",
     "implementation": "implemented",
     "preconditions": "Endpoint de dashboard existente",
     "change": "Sin Authorization",
-    "expected": "401/403 sin datos del usuario",
+    "expected": "401/403 sin vehículos",
     "sources": [
       "OWASP-API-2023",
       "RFC9110"
@@ -66,7 +66,7 @@
     "id": "T06",
     "name": "Ubicación de vehículo de otro propietario",
     "category": "authorization",
-    "implementation": "planned",
+    "implementation": "implemented",
     "preconditions": "Dos identidades y vehículos vinculados; propietarios verificados",
     "change": "Token A con UUID del vehículo B; compararlo con token B",
     "expected": "403/404 sin ubicación o datos del objeto B",
@@ -80,7 +80,7 @@
     "id": "T07",
     "name": "Función privilegiada",
     "category": "authorization",
-    "implementation": "planned",
+    "implementation": "implemented",
     "preconditions": "Política de rol y control positivo privilegiado verificados",
     "change": "Identidad ordinaria en función privilegiada",
     "expected": "Denegación y ausencia de datos/efectos privilegiados",
@@ -121,7 +121,7 @@
     "implementation": "implemented",
     "preconditions": "Token nuevo, exp-iat entre 115 y 125 s",
     "change": "Acceso antes de exp",
-    "expected": "200, identidad A y marca temporal anterior a exp",
+    "expected": "200 y lista propia de vehículos, marca temporal anterior a exp",
     "sources": [
       "RFC7519"
     ]
