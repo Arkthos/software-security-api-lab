@@ -14,6 +14,6 @@ La consigna aportada exige investigar herramientas de validación de API, compro
 | Recomendaciones pertinentes | Plantilla de trazabilidad | Medidas y verificación posterior documentadas |
 | Informe ejecutivo PDF | Secciones previstas aquí | Redacción individual posterior; usar docs/08-deliverable-brief.md |
 
-Solo se ensaya el laboratorio propio en localhost. crAPI es deliberadamente vulnerable; los hallazgos no estiman prevalencia en producción. Este taller es distinto del proyecto final basado en Saleor/NovaMarket CR.
+Solo se ensaya el laboratorio propio en localhost. crAPI es deliberadamente vulnerable; los hallazgos no estiman prevalencia en producción.
 
 La contribución del estudiante incluye interpretar evidencias, justificar oráculos, valorar limitaciones y defender recomendaciones. La rúbrica evalúa aplicación conceptual, dimensiones, pertinencia de solución y calidad del informe.
