@@ -23,11 +23,13 @@ function exec(cmd,args,cwd=root){
   const sourceConfig=exec('docker',['compose','-f','docker-compose.yml','config','--format','json'],path.join(repo,'deploy/docker'));
   const config=JSON.parse(sourceConfig);
   config.name='software-security-api-lab';
-  for(const service of Object.values(config.services)){
-    if(service.image?.startsWith('crapi/')) service.image=service.image.replace(/:[^:]+$/,':'+lock.image_tag);
+  for(const [name,service] of Object.entries(config.services)){
+    if(lock.image_digests[name])service.image=lock.image_digests[name];
     if(service.environment && 'TLS_ENABLED' in service.environment) service.environment.TLS_ENABLED='false';
     delete service.container_name;
   }
+  for(const [name,volume] of Object.entries(config.volumes || {}))volume.name='software-security-api-lab_'+name;
+  for(const [name,network] of Object.entries(config.networks || {}))network.name='software-security-api-lab_'+name;
   config.services['crapi-identity'].environment.JWT_EXPIRATION=String(lock.jwt_expiration_ms);
   config.services['crapi-web'].ports=[{target:80,published:'8888',host_ip:'127.0.0.1',protocol:'tcp'}];
   config.services.mailhog.ports=[{target:8025,published:'8025',host_ip:'127.0.0.1',protocol:'tcp'}];
@@ -41,6 +43,7 @@ function exec(cmd,args,cwd=root){
   const images={};
   for(const [name,service] of Object.entries(config.services)){
     if(['crapi-chatbot','chromadb'].includes(name))continue;
+    if(!lock.image_digests[name])throw new Error('Unpinned active image: '+name);
     const info=JSON.parse(exec('docker',['image','inspect',service.image]))[0];
     const digest=info.RepoDigests?.[0];
     if(!digest)throw new Error('Cannot resolve image digest: '+service.image);

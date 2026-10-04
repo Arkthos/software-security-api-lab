@@ -1,6 +1,6 @@
 # Software Security API Lab
 
-Cuaderno de laboratorio del Taller investigativo 1: **El uso de las funciones de seguridad y la comprobación de relaciones de tiempo y estado**. Postman es el instrumento; Newman ejecuta la misma colección por CLI. Objetivo: OWASP crAPI local, v1.1.6.
+Cuaderno de laboratorio del Taller investigativo 1: **El uso de las funciones de seguridad y la comprobación de relaciones de tiempo y estado**. Postman es el instrumento; Newman ejecuta la misma colección por CLI. Objetivo: OWASP crAPI local, v1.1.6-rc8.
 
 **Estado:** T01–T11 implementados, con controles de dos propietarios y de roles. Ejecución real de crAPI en validación. Las pruebas sintéticas verifican el instrumento y no representan hallazgos de crAPI.
 
@@ -45,4 +45,6 @@ Trabajo en ramas `feat/…` o `fix/…`, PR con validación y merge desde la cue
 
 ## Reproducibilidad
 
-El código de crAPI se fija por SHA. Se seleccionan imágenes con tag 1.1.6 y se resuelven a digests antes del arranque; el manifiesto conserva digests e IDs. Aún falta un lock de digests global validado: dos instalaciones nuevas pueden descargar una etiqueta que haya cambiado. La futura fijación de digests debe basarse en una ejecución real. Dependencias npm fijadas con package-lock.json; runner ubuntu-24.04 y Node 22.14.0 en CI.
+El objetivo es crAPI **v1.1.6-rc8**, una versión candidata elegida porque posee un conjunto completo de imágenes publicadas. Se fijan el commit d1cbf263a310ea4ed342e44a21a3ea32431e8ea6 y los ocho digests en lab/crapi.lock.json; el arranque no usa latest ni una etiqueta mutable. La correspondencia entre el tag de las imágenes y el tag de código se basa en la publicación del proveedor; no se verificó una atestación de compilación. Los resultados se atribuyen a los digests ejecutados.
+
+Dependencias npm fijadas con package-lock.json; runner ubuntu-24.04 y Node 22.14.0 en CI. El manifiesto registra los IDs y digests efectivos. La primera configuración v1.1.6 se descartó porque el tag de MailHog (y otras imágenes) no estaba publicado; no se obtuvieron resultados de seguridad en ese intento.

@@ -97,7 +97,7 @@ add('T11 | Same token after expiration','GET','/identity/api/v2/vehicle/vehicles
   `const waitMs = Number(pm.collectionVariables.get('token_time_exp'))*1000 + 10000 - Date.now();
 if (!Number.isFinite(waitMs) || waitMs > 140000) throw new Error('Invalid temporal precondition');
 setTimeout(function(){}, Math.max(0,waitMs));`);
-const collection = {info:{name:'API Security Lab v1.0',schema:'https://schema.getpostman.com/json/collection/v2.1.0/collection.json',description:'crAPI v1.1.6; solo localhost. T01–T11 con controles de propietarios y roles. Ver docs/04-test-plan.md.'},
+const collection = {info:{name:'API Security Lab v1.0',schema:'https://schema.getpostman.com/json/collection/v2.1.0/collection.json',description:'crAPI v1.1.6-rc8; solo localhost. T01–T11 con controles de propietarios y roles. Ver docs/04-test-plan.md.'},
   event:[{listen:'prerequest',script:{type:'text/javascript',exec:[
     "if (pm.collectionVariables.get('base_url') !== 'http://127.0.0.1:8888') throw new Error('Only the local crAPI laboratory is supported');"
   ]}}],

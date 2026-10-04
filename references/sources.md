@@ -70,6 +70,6 @@ RFC 9700 se mantiene como candidato del corpus previo, pero no se usa como norma
 
 No forma parte del corpus académico de cinco: especificación OpenAPI y código de crAPI fijados al commit del laboratorio, documentación oficial de Postman/Newman.
 
-- https://github.com/OWASP/crAPI/tree/700f03d12a392d9e408260b4beae72ed02a4a1a4
-- https://github.com/OWASP/crAPI/blob/700f03d12a392d9e408260b4beae72ed02a4a1a4/openapi-spec/crapi-openapi-spec.json
+- https://github.com/OWASP/crAPI/tree/d1cbf263a310ea4ed342e44a21a3ea32431e8ea6
+- https://github.com/OWASP/crAPI/blob/d1cbf263a310ea4ed342e44a21a3ea32431e8ea6/openapi-spec/crapi-openapi-spec.json
 - https://learning.postman.com/docs/reference/newman-cli/command-line-integration-with-newman

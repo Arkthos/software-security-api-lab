@@ -2,7 +2,7 @@
   "info": {
     "name": "API Security Lab v1.0",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": "crAPI v1.1.6; solo localhost. T01–T11 con controles de propietarios y roles. Ver docs/04-test-plan.md."
+    "description": "crAPI v1.1.6-rc8; solo localhost. T01–T11 con controles de propietarios y roles. Ver docs/04-test-plan.md."
   },
   "event": [
     {

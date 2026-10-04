@@ -4,7 +4,7 @@
 
 ## Observación de código verificada
 
-En `services/identity/src/main/java/com/crapi/config/JwtProvider.java` al commit `700f03d12a392d9e408260b4beae72ed02a4a1a4`, `generateJwtToken` emite exp, mientras que la rama RS256 de `validateJwtToken` verifica firma y retorna sin comparar exp. `JwtAuthTokenFilter` llama ese validador antes de establecer la identidad.
+En `services/identity/src/main/java/com/crapi/config/JwtProvider.java` al commit `d1cbf263a310ea4ed342e44a21a3ea32431e8ea6`, `generateJwtToken` emite exp, mientras que la rama RS256 de `validateJwtToken` verifica firma y retorna sin comparar exp. `JwtAuthTokenFilter` llama ese validador antes de establecer la identidad.
 
 [Inference] Ese camino podría permitir aceptar el mismo JWT después de exp. Falta comprobar la conducta del despliegue real, la configuración efectiva y posibles verificaciones en otras capas. T10/T11 se diseñaron para contrastarlo. No es un hallazgo experimental confirmado.
 
