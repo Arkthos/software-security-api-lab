@@ -57,7 +57,3 @@ Las cinco referencias completas y sus límites están en [sources.md](../referen
 ## Resultados que sí satisfacen el oráculo
 
 T01, T02, T03, T05, T08, T09 y T10 pasan en 3/3 runs. Las secuencias de estado muestran denegación antes de crear la cuenta y acceso del mismo email después de signup/login. Es evidencia acotada de ese cambio de estado; no cubre eliminación de recursos, concurrencia, logout ni revocación.
-
-## Preparación del entregable
-
-Usar esta interpretación, el CSV y la [guía del PDF](08-deliverable-brief.md) para redactar resultados, recomendaciones y conclusiones. Los intentos incompletos están separados en results/excluded y [el historial](09-execution-history.md); sus BLOCKED no se mezclan con la serie definitiva. Ver [limitaciones](06-limitations.md) antes de formular conclusiones.
