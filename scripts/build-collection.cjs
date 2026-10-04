@@ -46,10 +46,17 @@ for(const who of ['a','b']){
     `const email=pm.collectionVariables.get('user_${who}_email');
 const messages=pm.response.json().items || [];
 const message=messages.find(m=>(m.To || []).some(t=>t.Mailbox+'@'+t.Domain===email) || (m.Content?.Headers?.To || []).some(t=>t.includes(email)));
-const text=(message?.Content?.Body || '').replace(/=\\r?\\n/g,'').replace(/<[^>]*>/g,'');
+const encoding=(message?.Content?.Headers?.['Content-Transfer-Encoding'] || [''])[0].toLowerCase();
+let html=message?.Content?.Body || '';
+if(encoding==='base64')html=atob(html.replace(/\\s/g,''));
+if(encoding==='quoted-printable')html=html.replace(/=\\r?\\n/g,'').replace(/=([0-9a-f]{2})/gi,(_m,h)=>String.fromCharCode(parseInt(h,16)));
+const text=html.replace(/<[^>]*>/g,'');
 const vin=text.match(/VIN:\\s*([A-Z0-9]{17})/i)?.[1];
 const pin=text.match(/Pincode:\\s*(\\d+)/i)?.[1];
-pm.test('PRECONDITION: own vehicle email found',()=>{pm.expect(pm.response.code).to.equal(200);pm.expect(vin).to.be.a('string');pm.expect(pin).to.be.a('string');});
+pm.test('PRECONDITION: mail service available',()=>pm.expect(pm.response.code).to.equal(200));
+pm.test('PRECONDITION: own recipient found',()=>pm.expect(Boolean(message)).to.equal(true));
+pm.test('PRECONDITION: own vehicle VIN decoded',()=>pm.expect(vin).to.be.a('string'));
+pm.test('PRECONDITION: own vehicle PIN decoded',()=>pm.expect(pin).to.be.a('string'));
 pm.collectionVariables.set('vin_${who}',vin);pm.collectionVariables.set('pin_${who}',pin);`);
   items.at(-1).request.url='http://127.0.0.1:8025/api/v2/messages?limit=100';
   add('FIXTURE | Link vehicle '+who.toUpperCase(),'POST','/identity/api/v2/vehicle/add_vehicle',

@@ -29,7 +29,7 @@ test('Newman runner processes complete synthetic sequence, two-owner controls an
         
         const index=claims.sub.startsWith('lab-a-')?'A':'B';const ownId='vehicle-'+index;
         if(req.url.endsWith('/dashboard')) return send(200,{email:claims.sub,id:1,role:claims.sub==='admin@example.com'?'ROLE_ADMIN':'ROLE_USER'});
-        if(req.url.endsWith('/add_vehicle')){owned.set(claims.sub,ownId);return send(200,{status:200});}
+        if(req.url.endsWith('/add_vehicle')){if(body.vin!==index.repeat(17)||body.pincode!=='1234')return send(403,{error:'invalid fixture'});owned.set(claims.sub,ownId);return send(200,{status:200});}
         if(req.url.endsWith('/vehicles'))return send(200,owned.has(claims.sub)?[{uuid:ownId}]:[]);
         if(req.url.endsWith('/location')){const id=req.url.split('/').at(-2);if(id!==ownId)return send(403,{error:'denied'});return send(200,{carId:id,vehicleLocation:{latitude:'1',longitude:'2'}});}
         if(req.url.startsWith('/workshop/')){if(claims.sub!=='admin@example.com')return send(403,{error:'denied'});return send(200,{users:[{},{}]});}
@@ -41,7 +41,9 @@ test('Newman runner processes complete synthetic sequence, two-owner controls an
   
   const mail=http.createServer((_req,res)=>{res.writeHead(200,{'content-type':'application/json'});
     res.end(JSON.stringify({items:[...users.keys()].filter(email=>email.startsWith('lab-')).map(email=>({
-      To:[{Mailbox:email.split('@')[0],Domain:'example.com'}],Content:{Body:'<b>VIN: '+(email.startsWith('lab-a-')?'A':'B').repeat(17)+'</b> Pincode: 123456'}
+      To:[{Mailbox:email.split('@')[0],Domain:'example.com'}],Content:email.startsWith('lab-a-')?
+        {Headers:{'Content-Transfer-Encoding':['base64']},Body:Buffer.from('<b>VIN: </b><font>'+ 'A'.repeat(17)+'</font> Pincode: <b>1234</b>').toString('base64')}:
+        {Headers:{'Content-Transfer-Encoding':['quoted-printable']},Body:'<b>VIN: </b><font face=3D"calibri">BBBBBBBBB=\r\nBBBBBBBB</font> Pincode: <b>1234</b>'}
     }))}));
   });
   await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(8888,'127.0.0.1',resolve);});
